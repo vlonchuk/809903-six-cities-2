@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Main from './main';
+import PlacesList from './places-list';
 
 it(`Main correctly renders after relaunch`, () => {
   const properties = [
@@ -16,9 +16,7 @@ it(`Main correctly renders after relaunch`, () => {
   ];
 
   const tree = renderer
-    .create(<Main
-      properties={properties}
-    />)
+    .create(<PlacesList key="PlacesList" properties={properties} />)
     .toJSON();
 
   expect(tree).toMatchSnapshot();

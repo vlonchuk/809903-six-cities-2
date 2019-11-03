@@ -8,8 +8,13 @@ Enzyme.configure({adapter: new Adapter()});
 it(`App is correctly rendered after relaunch`, () => {
   const properties = [
     {
-      id: `prop-1`,
-      caption: `Beautiful & luxurious apartment at great location`,
+      id: `prop-2`,
+      caption: `Wood and stone place`,
+      imgSrc: `img/room.jpg`,
+      type: `Private room`,
+      priceCurrency: `€`,
+      priceValue: 80,
+      priceText: `night`,
     }
   ];
 
@@ -17,7 +22,7 @@ it(`App is correctly rendered after relaunch`, () => {
   const app = shallow(<Main
     properties={properties}
     onClick={clickHandler} />);
-  const anchor = app.find(`.place-card__name > a`);
+  const anchor = app.find(`PlacesList`).dive().find(`PlaceCard`).dive().find(`.place-card__name > a`);
   anchor.simulate(`click`);
   expect(clickHandler).toHaveBeenCalledTimes(1);
 });

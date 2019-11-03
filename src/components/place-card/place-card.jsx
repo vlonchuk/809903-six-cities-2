@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 
 class PlaceCard extends PureComponent {
   render() {
-    return <article className="cities__place-card place-card" key={this.props.id}>
+    return <article className="cities__place-card place-card" id={this.props.data.id} onMouseOver={this.mouseoverHandler.bind(this)}>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src="img/apartment-02.jpg" width="260" height="200" alt="Place image"></img>
+          <img className="place-card__image" src={this.props.data.imgSrc} width="260" height="200" alt="Place image"></img>
         </a>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;132</b>
-            <span className="place-card__price-text">&#47;&nbsp;night</span>
+            <b className="place-card__price-value">{this.props.data.priceCurrency}{this.props.data.priceValue}</b>
+            <span className="place-card__price-text">&#47;&nbsp;{this.props.data.priceText}</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
@@ -29,19 +29,32 @@ class PlaceCard extends PureComponent {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#" onClick={this.props.onClick}>{this.props.caption}</a>
+          <a href="#" onClick={this.props.onClick}>{this.props.data.caption}</a>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{this.props.data.type}</p>
       </div>
     </article>;
+  }
+
+  mouseoverHandler() {
+    if (this.props.onMouseOver) {
+      this.props.onMouseOver(this.props.data);
+    }
   }
 }
 
 PlaceCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  caption: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    caption: PropTypes.string.isRequired,
+    imgSrc: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    priceCurrency: PropTypes.string.isRequired,
+    priceValue: PropTypes.number.isRequired,
+    priceText: PropTypes.string.isRequired,
+  }),
   onClick: PropTypes.func,
-//  mouseOver: PropTypes.func,
+  onMouseOver: PropTypes.func,
 };
 
 export default PlaceCard;
