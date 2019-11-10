@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PlacesList from './../places-list/places-list.jsx';
+import Map from './../map/map.jsx';
 
 export default class Main extends PureComponent {
   render() {
@@ -89,7 +90,7 @@ export default class Main extends PureComponent {
               <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick} onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map/>
             </div>
           </div>
         </div>
