@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 
 export default class Map extends PureComponent {
@@ -6,6 +7,11 @@ export default class Map extends PureComponent {
     super(props);
 
     this._mapRef = React.createRef();
+  }
+
+  render() {
+    return <section className="cities__map map" id="map">
+    </section>;
   }
 
   componentDidMount() {
@@ -30,14 +36,26 @@ export default class Map extends PureComponent {
     })
     .addTo(map);
 
-    const offerCords = [52.3709553943508, 4.89309666406198];
-    leaflet
-      .marker(offerCords, {icon})
+    this.props.properties.forEach((el) => {
+      leaflet
+      .marker([el.coor.latitude, el.coor.longitude], {icon})
       .addTo(map);
-  }
-
-  render() {
-    return <section className="cities__map map" id="map">
-    </section>;
+    });
   }
 }
+
+Map.propTypes = {
+  properties: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    caption: PropTypes.string.isRequired,
+    imgSrc: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    priceCurrency: PropTypes.string.isRequired,
+    priceValue: PropTypes.number.isRequired,
+    priceText: PropTypes.string.isRequired,
+    coor: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
+  })).isRequired,
+};

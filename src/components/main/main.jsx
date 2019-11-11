@@ -90,7 +90,7 @@ export default class Main extends PureComponent {
               <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick} onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
             </section>
             <div className="cities__right-section">
-              <Map/>
+              <Map properties={this.props.properties} />
             </div>
           </div>
         </div>
@@ -108,6 +108,10 @@ Main.propTypes = {
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
+    coor: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
   })).isRequired,
   onClick: PropTypes.func,
   onPlaceCardMouseOver: PropTypes.func,

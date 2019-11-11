@@ -325,11 +325,7 @@ exports[`Main correctly renders after relaunch 1`] = `
         </section>
         <div
           className="cities__right-section"
-        >
-          <section
-            className="cities__map map"
-          />
-        </div>
+        />
       </div>
     </div>
   </main>

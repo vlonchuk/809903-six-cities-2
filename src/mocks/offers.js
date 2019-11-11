@@ -12,7 +12,7 @@ const offers = [
       longitude: 4.85309666406198
     },
   },
-/*  {
+  {
     id: `prop-2`,
     caption: `Wood and stone place`,
     imgSrc: `img/room.jpg`,
@@ -50,7 +50,7 @@ const offers = [
       latitude: 52.3809553943508,
       longitude: 4.939309666406198
     },
-  },*/
+  },
 ];
 
 export default offers;
