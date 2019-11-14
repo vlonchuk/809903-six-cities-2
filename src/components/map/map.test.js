@@ -17,9 +17,6 @@ it(`Map correctly renders after relaunch`, () => {
     },
   }];
 
-  const div = document.createElement(`div`);
-  div.id = `map`; document.body.appendChild(div);
-
   const tree = renderer
     .create(<Map properties={items} />)
     .toJSON();
