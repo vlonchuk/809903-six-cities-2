@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PlacesList from './../places-list/places-list.jsx';
 import Map from './../map/map.jsx';
+import CitiesList from './../cities-list/cities-list.js';
 
 export default class Main extends PureComponent {
   render() {
@@ -33,38 +34,7 @@ export default class Main extends PureComponent {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <CitiesList cities={this.props.cities}/>
           </section>
         </div>
         <div className="cities">
@@ -112,6 +82,10 @@ Main.propTypes = {
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
     }),
+  })).isRequired,
+  cities: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
   })).isRequired,
   onClick: PropTypes.func,
   onPlaceCardMouseOver: PropTypes.func,
