@@ -27,11 +27,7 @@ const cities = [
   },
 ];
 
-export const getOffersByCityId = (cityName) => {
-  const cityId = cities.find((el) => el.name === cityName);
-  if (!cityId) {
-    return null;
-  }
+export const getPropertiesByCityId = (cityId) => {
   return offers.filter((el) => el.cityId === cityId)
                .slice();
 };

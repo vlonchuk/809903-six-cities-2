@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import PlacesList from './../places-list/places-list.jsx';
 import Map from './../map/map.jsx';
 import CitiesList from './../cities-list/cities-list.js';
+import {connect} from "react-redux";
+import {ActionCreator} from './../../reducer.js';
 
-export default class Main extends PureComponent {
+class Main extends PureComponent {
   render() {
     return <div className="page page--gray page--main" key="app-main">
       <header className="header">
@@ -34,7 +36,7 @@ export default class Main extends PureComponent {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList cities={this.props.cities}/>
+            <CitiesList cities={this.props.cities} onCityClick={this.props.onCityClick}/>
           </section>
         </div>
         <div className="cities">
@@ -57,10 +59,10 @@ export default class Main extends PureComponent {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick} onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
+              <PlacesList key="PlacesList" onClick={this.props.onClick} onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
             </section>
             <div className="cities__right-section">
-              <Map properties={this.props.properties} />
+              <Map />
             </div>
           </div>
         </div>
@@ -87,6 +89,24 @@ Main.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   })).isRequired,
+  onCityClick: PropTypes.func,
   onClick: PropTypes.func,
   onPlaceCardMouseOver: PropTypes.func,
 };
+
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  cities: state.cities,
+  cityId: state.cityId,
+  properties: state.properties,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onCityClick: (cityId) => {
+    dispatch(ActionCreator.changeCity(cityId));
+    dispatch(ActionCreator.getProperties(cityId));
+  }
+});
+
+const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);
+
+export default MainWrapped;

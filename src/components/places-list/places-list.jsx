@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PlaceCard from './../place-card/place-card.jsx';
+import {connect} from 'react-redux';
 
-class PlacesList extends Component {
+class PlacesList extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -28,10 +29,6 @@ class PlacesList extends Component {
   onPlaceCardMouseOver(activeCard) {
     this.setState({activeCard});
   }
-
-  shouldComponentUpdate() {
-    return false;
-  }
 }
 
 PlacesList.propTypes = {
@@ -47,4 +44,10 @@ PlacesList.propTypes = {
   onClick: PropTypes.func,
 };
 
-export default PlacesList;
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  properties: state.properties,
+});
+
+const PlacesListWrapped = connect(mapStateToProps)(PlacesList);
+
+export default PlacesListWrapped;
