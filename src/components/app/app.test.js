@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import App from './app';
-import Map from './../map/map.jsx';
+import Main from './../main/main.jsx';
 
-jest.mock(`./../map/map.jsx`, () => jest.fn().mockReturnValue(null));
+jest.mock(`./../main/main.jsx`, () => jest.fn().mockReturnValue(null));
 
 it(`App correctly renders after relaunch`, () => {
   const tree = renderer
@@ -11,6 +11,6 @@ it(`App correctly renders after relaunch`, () => {
     />)
     .toJSON();
 
-  expect(Map).toHaveBeenCalled();
+  expect(Main).toHaveBeenCalled();
   expect(tree).toMatchSnapshot();
 });

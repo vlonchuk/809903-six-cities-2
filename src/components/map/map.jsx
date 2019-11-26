@@ -8,21 +8,19 @@ class Map extends PureComponent {
     super(props);
 
     this._mapRef = React.createRef();
+    this._icon = leaflet.icon({
+      iconUrl: `img/pin.svg`,
+      iconSize: [30, 30]
+    });
   }
 
   render() {
-    console.log(`componentRender`);
     return <section ref={this._mapRef} className="cities__map map" id="map">
     </section>;
   }
 
   componentDidMount() {
-    console.log(`componentDidMount`);
     const city = [52.38333, 4.9];
-    const icon = leaflet.icon({
-      iconUrl: `img/pin.svg`,
-      iconSize: [30, 30]
-    });
 
     const zoom = 12;
     if (this._mapRef.current) {
@@ -40,37 +38,20 @@ class Map extends PureComponent {
         attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
       })
       .addTo(map);
-/*
-      this.props.properties.forEach((el) => {
-        leaflet
-        .marker([el.coor.latitude, el.coor.longitude], {icon})
-        .addTo(map);
-      });*/
 
       let a = Array.from(this.props.properties.map((el) => {
-        return leaflet.marker([el.coor.latitude, el.coor.longitude], this.icon);
+        return leaflet.marker([el.coor.latitude, el.coor.longitude], this._icon);
       }));
       this.markersLayer = leaflet.layerGroup(a).addTo(this._map);
     }
   }
 
   componentDidUpdate() {
-    const icon = leaflet.icon({
-      iconUrl: `img/pin.svg`,
-      iconSize: [30, 30]
-    });
-
     this.markersLayer.clearLayers();
     let a = Array.from(this.props.properties.map((el) => {
-      return leaflet.marker([el.coor.latitude, el.coor.longitude], icon);
+      return leaflet.marker([el.coor.latitude, el.coor.longitude], this._icon);
     }));
     this.markersLayer = leaflet.layerGroup(a).addTo(this._map);
-/*
-    this.props.properties.forEach((el) => {
-      leaflet
-      .marker([el.coor.latitude, el.coor.longitude], {icon})
-      .addTo(this._map);
-    });*/
   }
 }
 
@@ -96,4 +77,6 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 
 const MapWrapped = connect(mapStateToProps)(Map);
 
+export {Map};
 export default MapWrapped;
+

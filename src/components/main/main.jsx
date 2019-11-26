@@ -2,7 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PlacesList from './../places-list/places-list.jsx';
 import Map from './../map/map.jsx';
-import CitiesList from './../cities-list/cities-list.js';
+import CitiesList from './../cities-list/cities-list.jsx';
+import PlacesFound from './../places-found/places-found.jsx';
 import {connect} from "react-redux";
 import {ActionCreator} from './../../reducer.js';
 
@@ -36,14 +37,14 @@ class Main extends PureComponent {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList cities={this.props.cities} onCityClick={this.props.onCityClick}/>
+            <CitiesList onCityClick={this.props.onCityClick} selectedCity={this.props.city} offers={this.props.offers}/>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <PlacesFound city={this.props.city} properties={this.props.properties}/>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
@@ -59,7 +60,8 @@ class Main extends PureComponent {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <PlacesList key="PlacesList" onClick={this.props.onClick} onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
+              <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick}
+                onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
             </section>
             <div className="cities__right-section">
               <Map />
@@ -69,11 +71,16 @@ class Main extends PureComponent {
       </main>
     </div>;
   }
+
+  componentDidMount() {
+    this.props.loadOffers();
+  }
 }
 
 Main.propTypes = {
-  properties: PropTypes.arrayOf(PropTypes.shape({
+  offers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
     caption: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -85,28 +92,44 @@ Main.propTypes = {
       longitude: PropTypes.number.isRequired,
     }),
   })).isRequired,
-  cities: PropTypes.arrayOf(PropTypes.shape({
+  properties: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    caption: PropTypes.string.isRequired,
+    imgSrc: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    priceCurrency: PropTypes.string.isRequired,
+    priceValue: PropTypes.number.isRequired,
+    priceText: PropTypes.string.isRequired,
+    coor: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
   })).isRequired,
+  city: PropTypes.string.isRequired,
+  loadOffers: PropTypes.func,
   onCityClick: PropTypes.func,
   onClick: PropTypes.func,
   onPlaceCardMouseOver: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  cities: state.cities,
-  cityId: state.cityId,
+  offers: state.offers,
+  city: state.city,
   properties: state.properties,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onCityClick: (cityId) => {
-    dispatch(ActionCreator.changeCity(cityId));
-    dispatch(ActionCreator.getProperties(cityId));
+  loadOffers: () => dispatch(ActionCreator.loadOffers()),
+
+  onCityClick: (city) => {
+    dispatch(ActionCreator.changeCity(city));
+    dispatch(ActionCreator.getProperties(city));
   }
 });
 
 const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);
+
+export {Main};
 
 export default MainWrapped;

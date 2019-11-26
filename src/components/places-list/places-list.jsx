@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PlaceCard from './../place-card/place-card.jsx';
-import {connect} from 'react-redux';
 
 class PlacesList extends PureComponent {
   constructor(props) {
@@ -34,6 +33,7 @@ class PlacesList extends PureComponent {
 PlacesList.propTypes = {
   properties: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
     caption: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -44,10 +44,4 @@ PlacesList.propTypes = {
   onClick: PropTypes.func,
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  properties: state.properties,
-});
-
-const PlacesListWrapped = connect(mapStateToProps)(PlacesList);
-
-export default PlacesListWrapped;
+export default PlacesList;

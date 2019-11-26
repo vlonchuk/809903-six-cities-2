@@ -1,7 +1,7 @@
 const offers = [
   {
     id: `prop-1`,
-    cityId: `city-1`,
+    city: `Amsterdam`,
     caption: `Beautiful & luxurious apartment at great location`,
     imgSrc: `img/apartment-01.jpg`,
     type: `Aparment`,
@@ -15,7 +15,7 @@ const offers = [
   },
   {
     id: `prop-2`,
-    cityId: `city-1`,
+    city: `Amsterdam`,
     caption: `Wood and stone place`,
     imgSrc: `img/room.jpg`,
     type: `Private room`,
@@ -29,7 +29,7 @@ const offers = [
   },
   {
     id: `prop-3`,
-    cityId: `city-1`,
+    city: `Amsterdam`,
     caption: `Canal View Prinsengracht`,
     imgSrc: `img/apartment-02.jpg`,
     type: `Aparment`,
@@ -43,7 +43,7 @@ const offers = [
   },
   {
     id: `prop-4`,
-    cityId: `city-1`,
+    city: `Amsterdam`,
     caption: `Nice, cozy, warm big bed apartment`,
     imgSrc: `img/apartment-03.jpg`,
     type: `Aparment`,
@@ -57,7 +57,7 @@ const offers = [
   },
   {
     id: `prop-5`,
-    cityId: `city-2`,
+    city: `Paris`,
     caption: `Canal View Prinsengracht`,
     imgSrc: `img/apartment-02.jpg`,
     type: `Aparment`,
@@ -71,7 +71,7 @@ const offers = [
   },
   {
     id: `prop-6`,
-    cityId: `city-2`,
+    city: `Paris`,
     caption: `Nice, cozy, warm big bed apartment`,
     imgSrc: `img/apartment-03.jpg`,
     type: `Aparment`,
@@ -84,5 +84,10 @@ const offers = [
     },
   },
 ];
+
+export const getPropertiesByCity = (city) => {
+  return offers.filter((el) => el.city === city)
+               .slice();
+};
 
 export default offers;
