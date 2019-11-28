@@ -40,6 +40,7 @@ PlacesList.propTypes = {
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
   })).isRequired,
   onClick: PropTypes.func,
 };

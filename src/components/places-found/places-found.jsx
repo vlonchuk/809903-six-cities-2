@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const PlacesFound = ({city, properties}) => {
   if (city === ``) {
-    return <b className="places__found">Chose city</b>;
+    return <b className="places__found">Choose city</b>;
   }
   return <b className="places__found">{properties.length} places to stay in {city}</b>;
 };

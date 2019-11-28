@@ -8,6 +8,7 @@ const offers = [
     priceCurrency: `€`,
     priceValue: 120,
     priceText: `night`,
+    rating: 50,
     coor: {
       latitude: 52.3909553943508,
       longitude: 4.85309666406198
@@ -22,6 +23,7 @@ const offers = [
     priceCurrency: `€`,
     priceValue: 80,
     priceText: `night`,
+    rating: 80,
     coor: {
       latitude: 52.369553943508,
       longitude: 4.85309666406198
@@ -36,6 +38,7 @@ const offers = [
     priceCurrency: `€`,
     priceValue: 132,
     priceText: `night`,
+    rating: 100,
     coor: {
       latitude: 52.3909553943508,
       longitude: 4.929309666406198
@@ -50,6 +53,7 @@ const offers = [
     priceCurrency: `€`,
     priceValue: 180,
     priceText: `night`,
+    rating: 65,
     coor: {
       latitude: 52.3809553943508,
       longitude: 4.939309666406198
@@ -64,6 +68,7 @@ const offers = [
     priceCurrency: `€`,
     priceValue: 132,
     priceText: `night`,
+    rating: 90,
     coor: {
       latitude: 52.3909553943508,
       longitude: 4.929309666406198
@@ -78,6 +83,7 @@ const offers = [
     priceCurrency: `€`,
     priceValue: 180,
     priceText: `night`,
+    rating: 40,
     coor: {
       latitude: 52.3809553943508,
       longitude: 4.939309666406198

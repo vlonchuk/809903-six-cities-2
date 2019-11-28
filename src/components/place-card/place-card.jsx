@@ -24,7 +24,7 @@ class PlaceCard extends PureComponent {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `80%`}}></span>
+            <span style={{width: this.props.data.rating + `%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -52,6 +52,7 @@ PlaceCard.propTypes = {
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
   }),
   onClick: PropTypes.func,
   onMouseOver: PropTypes.func,
