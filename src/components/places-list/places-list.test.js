@@ -6,6 +6,7 @@ it(`Main correctly renders after relaunch`, () => {
   const properties = [
     {
       id: `prop-2`,
+      city: `Paris`,
       caption: `Wood and stone place`,
       imgSrc: `img/room.jpg`,
       type: `Private room`,

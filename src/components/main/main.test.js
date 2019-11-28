@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Main from './main';
+import {Main} from './main';
 import Map from './../map/map.jsx';
 
 jest.mock(`./../map/map.jsx`, () => jest.fn().mockReturnValue(null));
@@ -9,6 +9,7 @@ it(`Main correctly renders after relaunch`, () => {
   const properties = [
     {
       id: `prop-2`,
+      city: `Paris`,
       caption: `Wood and stone place`,
       imgSrc: `img/room.jpg`,
       type: `Private room`,
@@ -18,9 +19,10 @@ it(`Main correctly renders after relaunch`, () => {
     },
   ];
 
+  const loadOffersHandler = jest.fn();
   const tree = renderer
     .create(<Main
-      properties={properties}
+      offers={properties} city={properties[0].city} properties={properties} loadOffers={loadOffersHandler}
     />)
     .toJSON();
 

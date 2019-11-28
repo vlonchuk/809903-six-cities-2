@@ -1,12 +1,17 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
+import {connect} from 'react-redux';
 
-export default class Map extends PureComponent {
+class Map extends PureComponent {
   constructor(props) {
     super(props);
 
     this._mapRef = React.createRef();
+    this._icon = leaflet.icon({
+      iconUrl: `img/pin.svg`,
+      iconSize: [30, 30]
+    });
   }
 
   render() {
@@ -16,10 +21,6 @@ export default class Map extends PureComponent {
 
   componentDidMount() {
     const city = [52.38333, 4.9];
-    const icon = leaflet.icon({
-      iconUrl: `img/pin.svg`,
-      iconSize: [30, 30]
-    });
 
     const zoom = 12;
     if (this._mapRef.current) {
@@ -29,6 +30,7 @@ export default class Map extends PureComponent {
         zoomControl: false,
         marker: true
       });
+      this._map = map;
       map.setView(city, zoom);
 
       leaflet
@@ -37,12 +39,19 @@ export default class Map extends PureComponent {
       })
       .addTo(map);
 
-      this.props.properties.forEach((el) => {
-        leaflet
-        .marker([el.coor.latitude, el.coor.longitude], {icon})
-        .addTo(map);
-      });
+      let a = Array.from(this.props.properties.map((el) => {
+        return leaflet.marker([el.coor.latitude, el.coor.longitude], this._icon);
+      }));
+      this.markersLayer = leaflet.layerGroup(a).addTo(this._map);
     }
+  }
+
+  componentDidUpdate() {
+    this.markersLayer.clearLayers();
+    let a = Array.from(this.props.properties.map((el) => {
+      return leaflet.marker([el.coor.latitude, el.coor.longitude], this._icon);
+    }));
+    this.markersLayer = leaflet.layerGroup(a).addTo(this._map);
   }
 }
 
@@ -58,6 +67,16 @@ Map.propTypes = {
     coor: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
-    }),
+    }).isRequired,
   })).isRequired,
 };
+
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  properties: state.properties,
+});
+
+const MapWrapped = connect(mapStateToProps)(Map);
+
+export {Map};
+export default MapWrapped;
+

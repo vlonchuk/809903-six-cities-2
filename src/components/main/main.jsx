@@ -2,8 +2,12 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PlacesList from './../places-list/places-list.jsx';
 import Map from './../map/map.jsx';
+import CitiesList from './../cities-list/cities-list.jsx';
+import PlacesFound from './../places-found/places-found.jsx';
+import {connect} from "react-redux";
+import {ActionCreator} from './../../reducer.js';
 
-export default class Main extends PureComponent {
+class Main extends PureComponent {
   render() {
     return <div className="page page--gray page--main" key="app-main">
       <header className="header">
@@ -33,45 +37,14 @@ export default class Main extends PureComponent {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <CitiesList onCityClick={this.props.onCityClick} selectedCity={this.props.city} offers={this.props.offers}/>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <PlacesFound city={this.props.city} properties={this.props.properties}/>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
@@ -87,21 +60,27 @@ export default class Main extends PureComponent {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick} onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
+              <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick}
+                onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
             </section>
             <div className="cities__right-section">
-              <Map properties={this.props.properties} />
+              <Map />
             </div>
           </div>
         </div>
       </main>
     </div>;
   }
+
+  componentDidMount() {
+    this.props.loadOffers();
+  }
 }
 
 Main.propTypes = {
-  properties: PropTypes.arrayOf(PropTypes.shape({
+  offers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
     caption: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -113,6 +92,44 @@ Main.propTypes = {
       longitude: PropTypes.number.isRequired,
     }),
   })).isRequired,
+  properties: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    caption: PropTypes.string.isRequired,
+    imgSrc: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    priceCurrency: PropTypes.string.isRequired,
+    priceValue: PropTypes.number.isRequired,
+    priceText: PropTypes.string.isRequired,
+    coor: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
+  })).isRequired,
+  city: PropTypes.string.isRequired,
+  loadOffers: PropTypes.func,
+  onCityClick: PropTypes.func,
   onClick: PropTypes.func,
   onPlaceCardMouseOver: PropTypes.func,
 };
+
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  offers: state.offers,
+  city: state.city,
+  properties: state.properties,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadOffers: () => dispatch(ActionCreator.loadOffers()),
+
+  onCityClick: (city) => {
+    dispatch(ActionCreator.changeCity(city));
+    dispatch(ActionCreator.getProperties(city));
+  }
+});
+
+const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);
+
+export {Main};
+
+export default MainWrapped;

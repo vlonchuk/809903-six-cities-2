@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PlaceCard from './../place-card/place-card.jsx';
 
-class PlacesList extends Component {
+class PlacesList extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -28,15 +28,12 @@ class PlacesList extends Component {
   onPlaceCardMouseOver(activeCard) {
     this.setState({activeCard});
   }
-
-  shouldComponentUpdate() {
-    return false;
-  }
 }
 
 PlacesList.propTypes = {
   properties: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
     caption: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
