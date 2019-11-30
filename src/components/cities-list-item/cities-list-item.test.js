@@ -4,7 +4,7 @@ import CitiesListItem from './cities-list-item';
 
 it(`CitiesListItem correctly renders after relaunch`, () => {
   const tree = renderer
-    .create(<CitiesListItem city={`Paris`} selected={true}/>)
+    .create(<CitiesListItem city={`Paris`} selected={true} sortActiveOption={`Popular`}/>)
     .toJSON();
 
   expect(tree).toMatchSnapshot();

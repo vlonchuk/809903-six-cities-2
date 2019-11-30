@@ -15,7 +15,7 @@ it(`CitiesList correctly renders after relaunch`, () => {
   }];
 
   const tree = renderer
-    .create(<CitiesList selectedCity={offers[0].city} offers={offers}/>)
+    .create(<CitiesList selectedCity={offers[0].city} offers={offers} sortActiveOption={`Popular`}/>)
     .toJSON();
 
   expect(tree).toMatchSnapshot();

@@ -11,12 +11,15 @@ it(`Main correctly renders after relaunch`, () => {
     priceCurrency: `€`,
     priceValue: 80,
     priceText: `night`,
+    rating: 90,
   };
 
   const onMouseOver = () => {};
+  const onMouseEnter = jest.fn();
+  const onMouseLeave = jest.fn();
 
   const tree = renderer
-    .create(<PlaceCard key={item.id} data={item} onMouseOver={onMouseOver} />)
+    .create(<PlaceCard key={item.id} data={item} onMouseOver={onMouseOver} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} />)
     .toJSON();
 
   expect(tree).toMatchSnapshot();

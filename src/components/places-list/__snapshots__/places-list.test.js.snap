@@ -7,6 +7,8 @@ exports[`Main correctly renders after relaunch 1`] = `
   <article
     className="cities__place-card place-card"
     id="prop-2"
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
     onMouseOver={[Function]}
   >
     <div
@@ -75,7 +77,7 @@ exports[`Main correctly renders after relaunch 1`] = `
           <span
             style={
               Object {
-                "width": "80%",
+                "width": "90%",
               }
             }
           />

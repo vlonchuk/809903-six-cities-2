@@ -53,7 +53,10 @@ class Main extends PureComponent {
                 onArrowClick={this.props.onSortArrowClick}
                 onOptionClick={this.props.onSortOptionClick}/>
               <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick}
-                onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
+                onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}
+                onPlaceCardMouseEnter={this.props.onPlaceCardMouseEnter}
+                onPlaceCardMouseLeave={this.props.onPlaceCardMouseLeave}
+              />
             </section>
             <div className="cities__right-section">
               <Map />
@@ -110,6 +113,23 @@ Main.propTypes = {
   sortOpened: PropTypes.bool.isRequired,
   onSortArrowClick: PropTypes.func.isRequired,
   onSortOptionClick: PropTypes.func.isRequired,
+  onPlaceCardMouseEnter: PropTypes.func.isRequired,
+  onPlaceCardMouseLeave: PropTypes.func.isRequired,
+  activeCard: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    caption: PropTypes.string.isRequired,
+    imgSrc: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    priceCurrency: PropTypes.string.isRequired,
+    priceValue: PropTypes.number.isRequired,
+    priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    coor: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
+  }),
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
@@ -119,6 +139,7 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   sortOptions: state.sortOptions,
   sortActiveOption: state.sortActiveOption,
   sortOpened: state.sortOpened,
+  activeCard: state.activeCard,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -142,7 +163,15 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(ActionCreator.sortOpenToggle(true));
     dispatch(ActionCreator.sortProperties(option, properties));
     dispatch(ActionCreator.sortActiveOptionChange(option));
-  }
+  },
+
+  onPlaceCardMouseEnter: (card) => {
+    dispatch(ActionCreator.activateCard(card));
+  },
+
+  onPlaceCardMouseLeave: () => {
+    dispatch(ActionCreator.activateCard(null));
+  },
 });
 
 const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);

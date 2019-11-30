@@ -14,6 +14,7 @@ const initialState = {
   ],
   sortActiveOption: SortType.POPULAR,
   sortOpened: false,
+  activeCard: null,
 };
 
 const ActionType = {
@@ -23,6 +24,7 @@ const ActionType = {
   SORT_OPEN_TOGGLE: `SORT_OPEN_TOGGLE`,
   SORT_ACTIVE_OPTION_CHANGE: `SORT_ACTIVE_OPTION_CHANGE`,
   SORT_PROPERTIES: `SORT_PROPERTIES`,
+  ACTIVATE_CARD: `ACTIVATE_CARD`,
 };
 
 const ActionCreator = {
@@ -67,6 +69,13 @@ const ActionCreator = {
       payload: option === SortType.POPULAR && properties.length > 0 ?
         getPropertiesByCity(properties[0].city) : sortPropertiesByOption(option, properties)
     };
+  },
+
+  activateCard: (card) => {
+    return {
+      type: ActionType.ACTIVATE_CARD,
+      payload: card
+    };
   }
 };
 
@@ -88,6 +97,9 @@ function reducer(state = initialState, action) {
   }
   if (action.type === ActionType.SORT_PROPERTIES) {
     return Object.assign({}, state, {properties: action.payload});
+  }
+  if (action.type === ActionType.ACTIVATE_CARD) {
+    return Object.assign({}, state, {activeCard: action.payload});
   }
   return state;
 }
