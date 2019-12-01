@@ -1,4 +1,13 @@
-import {ActionType, reducer} from './reducer';
+import reducer from './reducer';
+import {
+  LOAD_OFFERS,
+  CHANGE_CITY,
+  GET_PROPERTIES,
+  SORT_OPEN_TOGGLE,
+  SORT_ACTIVE_OPTION_CHANGE,
+  SORT_PROPERTIES,
+  ACTIVATE_CARD
+} from './action-type/action-type.js';
 
 const offers = [
   {
@@ -14,6 +23,7 @@ const offers = [
       latitude: 52.3909553943508,
       longitude: 4.85309666406198
     },
+    rating: 90,
   },
   {
     id: `prop-2`,
@@ -28,6 +38,7 @@ const offers = [
       latitude: 52.369553943508,
       longitude: 4.85309666406198
     },
+    rating: 30,
   },
 ];
 
@@ -60,7 +71,7 @@ describe(`Reducer works correctly`, () => {
 
   it(`Reducer successfully loads offers`, () => {
     expect(reducer(initialState, {
-      type: ActionType.LOAD_OFFERS,
+      type: LOAD_OFFERS,
       payload: offers
     })).toEqual(Object.assign({}, initialState, {offers}));
   });
@@ -68,7 +79,7 @@ describe(`Reducer works correctly`, () => {
   const newCity = `Paris`;
   it(`Reducer correctly changes city`, () => {
     expect(reducer(initialState, {
-      type: ActionType.CHANGE_CITY,
+      type: CHANGE_CITY,
       payload: newCity
     })).toEqual(Object.assign({}, initialState, {city: newCity}));
   });
@@ -76,8 +87,47 @@ describe(`Reducer works correctly`, () => {
   it(`Reducer correctly gets properties`, () => {
     const oldState = Object.assign({}, initialState, {city: newCity});
     expect(reducer(oldState, {
-      type: ActionType.GET_PROPERTIES,
+      type: GET_PROPERTIES,
       payload: offers
     })).toEqual(Object.assign({}, oldState, {properties: offers}));
+  });
+
+  it(`Reducer.SORT_OPEN_TOGGLE check OPEN sort list `, () => {
+    expect(reducer(initialState, {
+      type: SORT_OPEN_TOGGLE,
+      payload: true
+    })).toEqual(Object.assign({}, initialState, {sortOpened: true}));
+  });
+
+  it(`Reducer.SORT_OPEN_TOGGLE check CLOSE sort list `, () => {
+    const oldState = Object.assign({}, initialState, {sortOpened: true});
+    expect(reducer(oldState, {
+      type: SORT_OPEN_TOGGLE,
+      payload: false
+    })).toEqual(Object.assign({}, initialState, {sortOpened: false}));
+  });
+
+  it(`Reducer.SORT_ACTIVE_OPTION_CHANGE`, () => {
+    const newSortActiveOption = `Popular`;
+    expect(reducer(initialState, {
+      type: SORT_ACTIVE_OPTION_CHANGE,
+      payload: newSortActiveOption
+    })).toEqual(Object.assign({}, initialState, {sortActiveOption: newSortActiveOption}));
+  });
+
+  it(`Reducer.SORT_PROPERTIES  `, () => {
+    const oldState = Object.assign({}, initialState, {city: newCity, properties: offers});
+    const newProperties = offers.slice().sort((p1, p2) => p2.rating - p1.rating);
+    expect(reducer(oldState, {
+      type: SORT_PROPERTIES,
+      payload: newProperties
+    })).toEqual(Object.assign({}, oldState, {properties: newProperties}));
+  });
+
+  it(`Reducer.ACTIVATE_CARD`, () => {
+    expect(reducer(initialState, {
+      type: ACTIVATE_CARD,
+      payload: offers[0]
+    })).toEqual(Object.assign({}, initialState, {activeCard: offers[0]}));
   });
 });

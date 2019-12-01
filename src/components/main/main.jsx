@@ -6,7 +6,7 @@ import CitiesList from './../cities-list/cities-list.jsx';
 import PlacesFound from './../places-found/places-found.jsx';
 import Sort from './../sort/sort.jsx';
 import {connect} from "react-redux";
-import {ActionCreator} from './../../reducer.js';
+import ActionCreator from './../../reducer/action-creator/action-creator.js';
 import {SortType} from '../../sort-func.js';
 
 class Main extends PureComponent {

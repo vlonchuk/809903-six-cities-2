@@ -27,4 +27,10 @@ it(`PlaceCard is correctly rendered after relaunch`, () => {
   const anchor = app.find(`#prop-2`);
   anchor.simulate(`mouseover`);
   expect(mouseOverHandler).toHaveBeenCalledWith(item);
+
+  anchor.simulate(`mouseenter`);
+  expect(mouseEnterHandler).toHaveBeenCalledWith(item);
+
+  anchor.simulate(`mouseleave`);
+  expect(mouseLeaveHandler).toHaveBeenCalledWith();
 });
