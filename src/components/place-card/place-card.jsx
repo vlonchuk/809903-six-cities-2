@@ -2,8 +2,24 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 class PlaceCard extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this._onMouseEnter = this.onMouseEnter.bind(this);
+    this._onMouseLeave = this.onMouseLeave.bind(this);
+  }
+
+  onMouseEnter() {
+    this.props.onMouseEnter(this.props.data);
+  }
+
+  onMouseLeave() {
+    this.props.onMouseLeave();
+  }
+
   render() {
-    return <article className="cities__place-card place-card" id={this.props.data.id} onMouseOver={this.mouseoverHandler.bind(this)}>
+    return <article className="cities__place-card place-card" id={this.props.data.id} onMouseOver={this.mouseoverHandler.bind(this)}
+      onMouseEnter={this._onMouseEnter} onMouseLeave={this._onMouseLeave}>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
           <img className="place-card__image" src={this.props.data.imgSrc} width="260" height="200" alt="Place image"></img>
@@ -24,7 +40,7 @@ class PlaceCard extends PureComponent {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `80%`}}></span>
+            <span style={{width: this.props.data.rating + `%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -52,9 +68,12 @@ PlaceCard.propTypes = {
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
   }),
   onClick: PropTypes.func,
   onMouseOver: PropTypes.func,
+  onMouseEnter: PropTypes.func.isRequired,
+  onMouseLeave: PropTypes.func.isRequired,
 };
 
 export default PlaceCard;

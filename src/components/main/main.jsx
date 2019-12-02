@@ -4,8 +4,10 @@ import PlacesList from './../places-list/places-list.jsx';
 import Map from './../map/map.jsx';
 import CitiesList from './../cities-list/cities-list.jsx';
 import PlacesFound from './../places-found/places-found.jsx';
+import Sort from './../sort/sort.jsx';
 import {connect} from "react-redux";
-import {ActionCreator} from './../../reducer.js';
+import ActionCreator from './../../reducer/action-creator/action-creator.js';
+import {SortType} from '../../sort-func.js';
 
 class Main extends PureComponent {
   render() {
@@ -37,7 +39,8 @@ class Main extends PureComponent {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList onCityClick={this.props.onCityClick} selectedCity={this.props.city} offers={this.props.offers}/>
+            <CitiesList onCityClick={this.props.onCityClick} selectedCity={this.props.city}
+              offers={this.props.offers} sortActiveOption={this.props.sortActiveOption}/>
           </section>
         </div>
         <div className="cities">
@@ -45,23 +48,15 @@ class Main extends PureComponent {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <PlacesFound city={this.props.city} properties={this.props.properties}/>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex="0">
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex="0">Popular</li>
-                  <li className="places__option" tabIndex="0">Price: low to high</li>
-                  <li className="places__option" tabIndex="0">Price: high to low</li>
-                  <li className="places__option" tabIndex="0">Top rated first</li>
-                </ul>
-              </form>
+              <Sort options={this.props.sortOptions} activeOption={this.props.sortActiveOption}
+                opened={this.props.sortOpened} properties={this.props.properties}
+                onArrowClick={this.props.onSortArrowClick}
+                onOptionClick={this.props.onSortOptionClick}/>
               <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick}
-                onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}/>
+                onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}
+                onPlaceCardMouseEnter={this.props.onPlaceCardMouseEnter}
+                onPlaceCardMouseLeave={this.props.onPlaceCardMouseLeave}
+              />
             </section>
             <div className="cities__right-section">
               <Map />
@@ -87,6 +82,7 @@ Main.propTypes = {
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
     coor: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
@@ -101,6 +97,7 @@ Main.propTypes = {
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
     coor: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
@@ -111,21 +108,70 @@ Main.propTypes = {
   onCityClick: PropTypes.func,
   onClick: PropTypes.func,
   onPlaceCardMouseOver: PropTypes.func,
+  sortOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  sortActiveOption: PropTypes.string.isRequired,
+  sortOpened: PropTypes.bool.isRequired,
+  onSortArrowClick: PropTypes.func.isRequired,
+  onSortOptionClick: PropTypes.func.isRequired,
+  onPlaceCardMouseEnter: PropTypes.func.isRequired,
+  onPlaceCardMouseLeave: PropTypes.func.isRequired,
+  activeCard: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    caption: PropTypes.string.isRequired,
+    imgSrc: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    priceCurrency: PropTypes.string.isRequired,
+    priceValue: PropTypes.number.isRequired,
+    priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    coor: PropTypes.shape({
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+    }),
+  }),
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   offers: state.offers,
   city: state.city,
   properties: state.properties,
+  sortOptions: state.sortOptions,
+  sortActiveOption: state.sortActiveOption,
+  sortOpened: state.sortOpened,
+  activeCard: state.activeCard,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadOffers: () => dispatch(ActionCreator.loadOffers()),
 
-  onCityClick: (city) => {
+  onCityClick: (city, sortActiveOption) => {
     dispatch(ActionCreator.changeCity(city));
-    dispatch(ActionCreator.getProperties(city));
-  }
+    const getPropertiesAction = ActionCreator.getProperties(city);
+    if (sortActiveOption === SortType.POPULAR) {
+      dispatch(getPropertiesAction);
+    } else {
+      dispatch(ActionCreator.sortProperties(sortActiveOption, getPropertiesAction.payload));
+    }
+  },
+
+  onSortArrowClick: (opened) => {
+    dispatch(ActionCreator.sortOpenToggle(opened));
+  },
+
+  onSortOptionClick: (option, properties) => {
+    dispatch(ActionCreator.sortOpenToggle(true));
+    dispatch(ActionCreator.sortProperties(option, properties));
+    dispatch(ActionCreator.sortActiveOptionChange(option));
+  },
+
+  onPlaceCardMouseEnter: (card) => {
+    dispatch(ActionCreator.activateCard(card));
+  },
+
+  onPlaceCardMouseLeave: () => {
+    dispatch(ActionCreator.activateCard(null));
+  },
 });
 
 const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);

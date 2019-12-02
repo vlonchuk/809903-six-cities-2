@@ -18,8 +18,10 @@ it(`CitiesList correctly functions after relaunch`, () => {
   }];
 
   const handler = jest.fn();
-  const app = shallow(<CitiesList selectedCity={offers[0].city} offers={offers} onCityClick={handler} />);
+  const sortActiveOption = `Popular`;
+  const app = shallow(<CitiesList selectedCity={offers[0].city} offers={offers} onCityClick={handler}
+    sortActiveOption={sortActiveOption} />);
   const anchor = app.find(`CitiesListItem`).dive().find(`a`);
   anchor.simulate(`click`);
-  expect(handler).toHaveBeenCalledWith(offers[0].city);
+  expect(handler).toHaveBeenCalledWith(offers[0].city, sortActiveOption);
 });

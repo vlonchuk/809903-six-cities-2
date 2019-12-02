@@ -21,7 +21,10 @@ class PlacesList extends PureComponent {
 
   get properties() {
     return this.props.properties.map((item) => (
-      <PlaceCard key={item.id} data={item} onClick={this.props.onClick} onMouseOver={this.onPlaceCardMouseOver} />
+      <PlaceCard key={item.id} data={item} onClick={this.props.onClick} onMouseOver={this.onPlaceCardMouseOver}
+        onMouseEnter={this.props.onPlaceCardMouseEnter}
+        onMouseLeave={this.props.onPlaceCardMouseLeave}
+      />
     ));
   }
 
@@ -40,8 +43,11 @@ PlacesList.propTypes = {
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
   })).isRequired,
   onClick: PropTypes.func,
+  onPlaceCardMouseEnter: PropTypes.func.isRequired,
+  onPlaceCardMouseLeave: PropTypes.func.isRequired,
 };
 
 export default PlacesList;

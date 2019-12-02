@@ -7,12 +7,12 @@ Enzyme.configure({adapter: new Adapter()});
 
 it(`CitiesListItem correctly functions after relaunch`, () => {
   const city = `Paris`;
-
+  const sortActiveOption = `Popular`;
   const handler = jest.fn();
 
-  const app = shallow(<CitiesListItem city={city} onCityClick={handler} />);
+  const app = shallow(<CitiesListItem city={city} onCityClick={handler} selected={true} sortActiveOption={sortActiveOption} />);
 
   const anchor = app.find(`a`);
   anchor.simulate(`click`);
-  expect(handler).toHaveBeenCalledWith(city);
+  expect(handler).toHaveBeenCalledWith(city, sortActiveOption);
 });
