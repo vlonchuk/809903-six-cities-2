@@ -53,7 +53,6 @@ class Main extends PureComponent {
                 onArrowClick={this.props.onSortArrowClick}
                 onOptionClick={this.props.onSortOptionClick}/>
               <PlacesList key="PlacesList" properties={this.props.properties} onClick={this.props.onClick}
-                onPlaceCardMouseOver={this.props.onPlaceCardMouseOver}
                 onPlaceCardMouseEnter={this.props.onPlaceCardMouseEnter}
                 onPlaceCardMouseLeave={this.props.onPlaceCardMouseLeave}
               />
@@ -107,7 +106,6 @@ Main.propTypes = {
   loadOffers: PropTypes.func,
   onCityClick: PropTypes.func,
   onClick: PropTypes.func,
-  onPlaceCardMouseOver: PropTypes.func,
   sortOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortActiveOption: PropTypes.string.isRequired,
   sortOpened: PropTypes.bool.isRequired,

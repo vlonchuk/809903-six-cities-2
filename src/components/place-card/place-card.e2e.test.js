@@ -17,16 +17,13 @@ it(`PlaceCard is correctly rendered after relaunch`, () => {
     rating: 90,
   };
 
-  const mouseOverHandler = jest.fn();
   const mouseEnterHandler = jest.fn();
   const mouseLeaveHandler = jest.fn();
 
-  const app = shallow(<PlaceCard key={item.id} data={item} onMouseOver={mouseOverHandler}
+  const app = shallow(<PlaceCard key={item.id} data={item}
     onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} />);
 
   const anchor = app.find(`#prop-2`);
-  anchor.simulate(`mouseover`);
-  expect(mouseOverHandler).toHaveBeenCalledWith(item);
 
   anchor.simulate(`mouseenter`);
   expect(mouseEnterHandler).toHaveBeenCalledWith(item);
