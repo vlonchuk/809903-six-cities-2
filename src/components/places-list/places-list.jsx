@@ -5,12 +5,6 @@ import PlaceCard from './../place-card/place-card.jsx';
 class PlacesList extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {
-      activeCard: null,
-    };
-
-    this.onPlaceCardMouseOver = this.onPlaceCardMouseOver.bind(this);
   }
 
   render() {
@@ -21,15 +15,11 @@ class PlacesList extends PureComponent {
 
   get properties() {
     return this.props.properties.map((item) => (
-      <PlaceCard key={item.id} data={item} onClick={this.props.onClick} onMouseOver={this.onPlaceCardMouseOver}
+      <PlaceCard key={item.id} data={item} onClick={this.props.onClick}
         onMouseEnter={this.props.onPlaceCardMouseEnter}
         onMouseLeave={this.props.onPlaceCardMouseLeave}
       />
     ));
-  }
-
-  onPlaceCardMouseOver(activeCard) {
-    this.setState({activeCard});
   }
 }
 

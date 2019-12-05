@@ -18,7 +18,7 @@ class PlaceCard extends PureComponent {
   }
 
   render() {
-    return <article className="cities__place-card place-card" id={this.props.data.id} onMouseOver={this.mouseoverHandler.bind(this)}
+    return <article className="cities__place-card place-card" id={this.props.data.id}
       onMouseEnter={this._onMouseEnter} onMouseLeave={this._onMouseLeave}>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
@@ -51,12 +51,6 @@ class PlaceCard extends PureComponent {
       </div>
     </article>;
   }
-
-  mouseoverHandler() {
-    if (this.props.onMouseOver) {
-      this.props.onMouseOver(this.props.data);
-    }
-  }
 }
 
 PlaceCard.propTypes = {
@@ -71,7 +65,6 @@ PlaceCard.propTypes = {
     rating: PropTypes.number.isRequired,
   }),
   onClick: PropTypes.func,
-  onMouseOver: PropTypes.func,
   onMouseEnter: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,
 };
