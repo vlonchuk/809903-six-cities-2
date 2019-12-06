@@ -45,7 +45,7 @@ class PlaceCard extends PureComponent {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#" onClick={this.props.onClick}>{this.props.data.caption}</a>
+          <a href="#" onClick={this.props.onClick}>{this.props.data.title}</a>
         </h2>
         <p className="place-card__type">{this.props.data.type}</p>
       </div>
@@ -55,8 +55,8 @@ class PlaceCard extends PureComponent {
 
 PlaceCard.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     priceCurrency: PropTypes.string.isRequired,

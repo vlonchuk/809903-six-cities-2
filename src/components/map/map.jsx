@@ -8,7 +8,6 @@ class Map extends PureComponent {
     super(props);
 
     this._mapRef = React.createRef();
-    this._zoom = 12;
     this._icon = leaflet.icon({
       iconUrl: `img/pin.svg`,
       iconSize: [30, 30]
@@ -24,22 +23,28 @@ class Map extends PureComponent {
     </section>;
   }
 
+  get currentCity() {
+    return this.props.properties[0].city;
+  }
+
   getMarkers() {
     const activeCardId = this.props.activeCard ? this.props.activeCard.id : NaN;
     const markers = Array.from(this.props.properties.map((el) => {
       const icon = (el.id === activeCardId ? this._iconActive : this._icon);
-      return leaflet.marker([el.coor.latitude, el.coor.longitude], {icon});
+      return leaflet.marker([el.location.latitude, el.location.longitude], {icon});
     }));
     return markers;
   }
 
   componentDidMount() {
-    const city = [52.38333, 4.9];
+    this._chosenCity = this.currentCity;
+    const {latitude, longitude, zoom} = this.currentCity.location;
+    const city = [latitude, longitude];
 
     if (this._mapRef.current) {
       const map = leaflet.map(this._mapRef.current, {
         center: city,
-        zoom: this._zoom,
+        zoom,
         zoomControl: false,
         marker: true
       });
@@ -60,39 +65,41 @@ class Map extends PureComponent {
     this.markersLayer.clearLayers();
     this.markersLayer = leaflet.layerGroup(this.getMarkers()).addTo(this._map);
     if (this.props.activeCard) {
-      const activeCoors = [this.props.activeCard.coor.latitude, this.props.activeCard.coor.longitude];
-      this._map.setView(activeCoors, this._zoom);
+      const {latitude, longitude, zoom} = this.props.activeCard.location;
+      this._map.setView([latitude, longitude], zoom);
+    } else {
+      if (this._chosenCity !== this.currentCity) {
+        this._chosenCity = this.currentCity;
+        const {latitude, longitude, zoom} = this.currentCity.location;
+        this._map.setView([latitude, longitude], zoom);
+      }
     }
   }
 }
 
 Map.propTypes = {
   properties: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
-    imgSrc: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    priceCurrency: PropTypes.string.isRequired,
-    priceValue: PropTypes.number.isRequired,
-    priceText: PropTypes.string.isRequired,
-    coor: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    city: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        zoom: PropTypes.number.isRequired,
+      }),
+    }),
+    location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
-    }).isRequired,
+      zoom: PropTypes.number.isRequired,
+    }),
   })).isRequired,
   activeCard: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    city: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
-    imgSrc: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    priceCurrency: PropTypes.string.isRequired,
-    priceValue: PropTypes.number.isRequired,
-    priceText: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    coor: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
     }),
   }),
 };

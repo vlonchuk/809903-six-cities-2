@@ -20,7 +20,7 @@ const CitiesPlaces = ({city, properties, sortOptions, sortActiveOption, sortOpen
       />
     </section>
     <div className="cities__right-section">
-      <Map />
+      {properties.length <= 0 ? null : <Map />}
     </div>
   </div>;
 };

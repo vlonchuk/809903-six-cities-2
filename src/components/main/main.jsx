@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import CitiesList from './../cities-list/cities-list.jsx';
 import {connect} from "react-redux";
 import ActionCreator from './../../reducer/action-creator/action-creator.js';
-import {SortType} from '../../sort-func.js';
+import SortType from '../../consts/sort-type.js';
 import CitiesPlaces from '../cities-places/cities-places.jsx';
 import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
+import {getRand} from './../../utils.js';
 
 class Main extends PureComponent {
   render() {
@@ -80,37 +81,61 @@ class Main extends PureComponent {
   componentDidMount() {
     this.props.loadOffers();
   }
+
+  componentDidUpdate() {
+    if (this.props.city === ``) {
+      const cities = [...new Set(this.props.offers.map((el) => el.city.name))];
+      const city = cities[getRand(cities.length)];
+      this.props.onCityClick(city, SortType.POPULAR);
+    }
+  }
 }
 
 Main.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    city: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    city: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        zoom: PropTypes.number.isRequired,
+      }),
+    }),
+    title: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    coor: PropTypes.shape({
+    location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
     }),
   })).isRequired,
   properties: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    city: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    city: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        zoom: PropTypes.number.isRequired,
+      }),
+    }),
+    title: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     priceCurrency: PropTypes.string.isRequired,
     priceValue: PropTypes.number.isRequired,
     priceText: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    coor: PropTypes.shape({
+    location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
     }),
   })).isRequired,
   city: PropTypes.string.isRequired,
@@ -125,9 +150,16 @@ Main.propTypes = {
   onPlaceCardMouseEnter: PropTypes.func.isRequired,
   onPlaceCardMouseLeave: PropTypes.func.isRequired,
   activeCard: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    city: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    city: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        zoom: PropTypes.number.isRequired,
+      }),
+    }),
+    title: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     priceCurrency: PropTypes.string.isRequired,

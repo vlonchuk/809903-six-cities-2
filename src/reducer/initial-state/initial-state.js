@@ -1,4 +1,4 @@
-import {SortType} from './../../sort-func.js';
+import SortType from './../../consts/sort-type.js';
 
 const initialState = {
   offers: [],
