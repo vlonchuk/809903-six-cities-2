@@ -8,16 +8,28 @@ Enzyme.configure({adapter: new Adapter()});
 it(`App is correctly rendered after relaunch`, () => {
   const properties = [
     {
-      id: `prop-2`,
-      city: `Amsterdam`,
-      caption: `Wood and stone place`,
-      imgSrc: `img/room.jpg`,
-      type: `Private room`,
+      id: 3,
+      city: {
+        name: `Amsterdam`,
+        location: {
+          latitude: 52.370216,
+          longitude: 4.895168,
+          zoom: 8
+        },
+      },
+      title: `Canal View Prinsengracht`,
+      imgSrc: `img/apartment-02.jpg`,
+      type: `Aparment`,
       priceCurrency: `€`,
-      priceValue: 80,
+      priceValue: 132,
       priceText: `night`,
-      rating: 90,
-    }
+      rating: 100,
+      location: {
+        latitude: 52.3909553943508,
+        longitude: 4.929309666406198,
+        zoom: 12
+      },
+    },
   ];
 
   const SortType = {
@@ -34,7 +46,7 @@ it(`App is correctly rendered after relaunch`, () => {
   const onPlaceCardMouseEnter = jest.fn();
   const onPlaceCardMouseLeave = jest.fn();
   const app = shallow(<Main
-    city={properties[0].city}
+    city={properties[0].city.name}
     offers={properties}
     properties={properties}
     sortOptions={[SortType.POPULAR]}
@@ -47,7 +59,7 @@ it(`App is correctly rendered after relaunch`, () => {
     selectedCity={``}
     onClick={clickHandler}
     loadOffers={loadOffersHandler} />);
-  const anchor = app.find(`PlacesList`).dive().find(`PlaceCard`).dive().find(`.place-card__name > a`);
+  const anchor = app.find(`CitiesPlaces`).dive().find(`PlacesList`).dive().find(`PlaceCard`).dive().find(`.place-card__name > a`);
   anchor.simulate(`click`);
   expect(clickHandler).toHaveBeenCalledTimes(1);
 });

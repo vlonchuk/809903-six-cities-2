@@ -87,12 +87,12 @@ Map.propTypes = {
         longitude: PropTypes.number.isRequired,
         zoom: PropTypes.number.isRequired,
       }),
-    }),
+    }).isRequired,
     location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
       zoom: PropTypes.number.isRequired,
-    }),
+    }).isRequired,
   })).isRequired,
   activeCard: PropTypes.shape({
     id: PropTypes.number.isRequired,

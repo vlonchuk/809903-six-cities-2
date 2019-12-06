@@ -8,7 +8,7 @@ const PlacesFound = ({city, properties}) => {
   if (properties.length === 0) {
     return null;
   }
-  return <b className="places__found">{properties.length} places to stay in {city}</b>;
+  return <b className="places__found">{properties.length} places to stay in {city.name}</b>;
 };
 
 PlacesFound.propTypes = {
