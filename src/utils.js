@@ -1,9 +1,4 @@
-const SortType = {
-  POPULAR: `Popular`,
-  PRICE_LOW_TO_HIGH: `Price: low to high`,
-  PRICE_HIGH_TO_LOW: `Price: high to low`,
-  TOP_RATED_FIRST: `Top rated first`
-};
+import SortType from './consts/sort-type.js';
 
 const sortPropertiesByOption = (option, properties) => {
   if (option === SortType.PRICE_HIGH_TO_LOW) {
@@ -18,4 +13,12 @@ const sortPropertiesByOption = (option, properties) => {
   return properties;
 };
 
-export {SortType, sortPropertiesByOption};
+const getRand = (num) => {
+  const size = 1.0 / num;
+  return Math.floor(Math.random() / size);
+};
+
+export {
+  sortPropertiesByOption,
+  getRand
+};

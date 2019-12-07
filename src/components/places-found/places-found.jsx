@@ -5,7 +5,10 @@ const PlacesFound = ({city, properties}) => {
   if (city === ``) {
     return <b className="places__found">Choose city</b>;
   }
-  return <b className="places__found">{properties.length} places to stay in {city}</b>;
+  if (properties.length === 0) {
+    return null;
+  }
+  return <b className="places__found">{properties.length} places to stay in {city.name}</b>;
 };
 
 PlacesFound.propTypes = {

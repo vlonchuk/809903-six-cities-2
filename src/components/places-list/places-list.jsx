@@ -25,9 +25,16 @@ class PlacesList extends PureComponent {
 
 PlacesList.propTypes = {
   properties: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    city: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    city: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        zoom: PropTypes.number.isRequired,
+      }),
+    }),
+    title: PropTypes.string.isRequired,
     imgSrc: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     priceCurrency: PropTypes.string.isRequired,

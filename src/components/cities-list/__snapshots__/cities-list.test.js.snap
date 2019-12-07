@@ -13,7 +13,7 @@ exports[`CitiesList correctly renders after relaunch 1`] = `
       onClick={[Function]}
     >
       <span>
-        Paris
+        Amsterdam
       </span>
     </a>
   </li>

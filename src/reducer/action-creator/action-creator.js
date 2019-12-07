@@ -1,6 +1,7 @@
 import offers from './../../mocks/offers.js';
 import {getPropertiesByCity} from './../../mocks/offers.js';
-import {SortType, sortPropertiesByOption} from './../../sort-func.js';
+import SortType from './../../consts/sort-type.js';
+import {sortPropertiesByOption} from '../../utils.js';
 
 import {
   LOAD_OFFERS,
