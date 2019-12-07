@@ -1,5 +1,4 @@
-import offers from './../../mocks/offers.js';
-import {getPropertiesByCity} from './../../mocks/offers.js';
+import {getPropertiesByCity} from './../../utils.js';
 import SortType from './../../consts/sort-type.js';
 import {sortPropertiesByOption} from '../../utils.js';
 
@@ -10,28 +9,36 @@ import {
   SORT_OPEN_TOGGLE,
   SORT_ACTIVE_OPTION_CHANGE,
   SORT_PROPERTIES,
-  ACTIVATE_CARD
+  ACTIVATE_CARD,
+  REQUIRED_AUTHORIZATION
 } from './../action-type/action-type.js';
 
 const ActionCreator = {
-  loadOffers: () => {
+  requireAuthorization: () => {
+    return {
+      type: REQUIRED_AUTHORIZATION,
+      payload: true
+    };
+  },
+
+  loadOffers: (offers) => {
     return {
       type: LOAD_OFFERS,
-      payload: offers,
+      payload: offers
     };
   },
 
   changeCity: (city) => {
     return {
       type: CHANGE_CITY,
-      payload: city,
+      payload: city
     };
   },
 
-  getProperties: (city) => {
+  getProperties: (city, offers) => {
     return {
       type: GET_PROPERTIES,
-      payload: getPropertiesByCity(city)
+      payload: getPropertiesByCity(city, offers)
     };
   },
 
@@ -49,11 +56,11 @@ const ActionCreator = {
     };
   },
 
-  sortProperties: (option, properties) => {
+  sortProperties: (option, properties, offers) => {
     return {
       type: SORT_PROPERTIES,
       payload: option === SortType.POPULAR && properties.length > 0 ?
-        getPropertiesByCity(properties[0].city) : sortPropertiesByOption(option, properties)
+        getPropertiesByCity(properties[0].city, offers) : sortPropertiesByOption(option, properties)
     };
   },
 

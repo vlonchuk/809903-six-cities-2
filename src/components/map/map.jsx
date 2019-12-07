@@ -64,15 +64,11 @@ class Map extends PureComponent {
   componentDidUpdate() {
     this.markersLayer.clearLayers();
     this.markersLayer = leaflet.layerGroup(this.getMarkers()).addTo(this._map);
-    if (this.props.activeCard) {
-      const {latitude, longitude, zoom} = this.props.activeCard.location;
+
+    if (this._chosenCity !== this.currentCity) {
+      this._chosenCity = this.currentCity;
+      const {latitude, longitude, zoom} = this.currentCity.location;
       this._map.setView([latitude, longitude], zoom);
-    } else {
-      if (this._chosenCity !== this.currentCity) {
-        this._chosenCity = this.currentCity;
-        const {latitude, longitude, zoom} = this.currentCity.location;
-        this._map.setView([latitude, longitude], zoom);
-      }
     }
   }
 }

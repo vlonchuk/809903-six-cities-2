@@ -6,8 +6,10 @@ import {
   SORT_OPEN_TOGGLE,
   SORT_ACTIVE_OPTION_CHANGE,
   SORT_PROPERTIES,
-  ACTIVATE_CARD
+  ACTIVATE_CARD,
+  REQUIRED_AUTHORIZATION
 } from './action-type/action-type.js';
+import initialState from './initial-state/initial-state.js';
 
 const offers = [
   {
@@ -41,28 +43,6 @@ const offers = [
     rating: 30,
   },
 ];
-
-const SortType = {
-  POPULAR: `Popular`,
-  PRICE_LOW_TO_HIGH: `Price: low to high`,
-  PRICE_HIGH_TO_LOW: `Price: high to low`,
-  TOP_RATED_FIRST: `Top rated first`
-};
-
-const initialState = {
-  offers: [],
-  city: ``,
-  properties: [],
-  sortOptions: [
-    SortType.POPULAR,
-    SortType.PRICE_LOW_TO_HIGH,
-    SortType.PRICE_HIGH_TO_LOW,
-    SortType.TOP_RATED_FIRST
-  ],
-  sortActiveOption: SortType.POPULAR,
-  sortOpened: false,
-  activeCard: null,
-};
 
 describe(`Reducer works correctly`, () => {
   it(`Reducer without additional parameters should return initial state`, () => {
@@ -129,5 +109,19 @@ describe(`Reducer works correctly`, () => {
       type: ACTIVATE_CARD,
       payload: offers[0]
     })).toEqual(Object.assign({}, initialState, {activeCard: offers[0]}));
+  });
+
+  it(`Reducer.REQUIRED_AUTHORIZATION: true`, () => {
+    expect(reducer(initialState, {
+      type: REQUIRED_AUTHORIZATION,
+      payload: true
+    })).toEqual(Object.assign({}, initialState, {isAuthorizationRequired: true}));
+  });
+
+  it(`Reducer.REQUIRED_AUTHORIZATION: false`, () => {
+    expect(reducer(Object.assign({}, initialState, {isAuthorizationRequired: true}), {
+      type: REQUIRED_AUTHORIZATION,
+      payload: false
+    })).toEqual(Object.assign({}, initialState, {isAuthorizationRequired: false}));
   });
 });

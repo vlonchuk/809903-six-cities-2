@@ -1,15 +1,14 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {Main} from './main';
-import Map from './../map/map.jsx';
+import CitiesPlaces from './cities-places';
 import SortType from './../../consts/sort-type.js';
 import offers from './../../mocks/offers.js';
 
 jest.mock(`./../map/map.jsx`, () => jest.fn().mockReturnValue(null));
 
-it(`Main correctly renders after relaunch`, () => {
+it(`CitiesPlaces correctly renders after relaunch`, () => {
   const tree = renderer
-    .create(<Main
+    .create(<CitiesPlaces
       offers={offers} city={offers[0].city.name} properties={offers} loadOffers={jest.fn()}
       sortOptions={[SortType.POPULAR]}
       sortActiveOption={SortType.POPULAR}
@@ -20,9 +19,7 @@ it(`Main correctly renders after relaunch`, () => {
       onPlaceCardMouseLeave={jest.fn()}
       selectedCity={``}
       onClick={jest.fn()}
-    />)
-    .toJSON();
+    />).toJSON();
 
-  expect(Map).toHaveBeenCalled();
   expect(tree).toMatchSnapshot();
 });

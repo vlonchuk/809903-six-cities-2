@@ -6,5 +6,6 @@ exports[`PlacesFound correctly renders after relaunch 1`] = `
 >
   1
    places to stay in 
+  Amsterdam
 </b>
 `;
