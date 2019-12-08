@@ -13,6 +13,7 @@ const initialState = {
   sortActiveOption: SortType.POPULAR,
   sortOpened: false,
   activeCard: null,
+  isAuthorizationRequired: false,
 };
 
 export default initialState;

@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Main correctly renders after relaunch 1`] = `
+exports[`PlaceCard correctly renders after relaunch 1`] = `
 <article
   className="cities__place-card place-card"
-  id={3}
+  id={1}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -17,7 +17,7 @@ exports[`Main correctly renders after relaunch 1`] = `
         alt="Place image"
         className="place-card__image"
         height="200"
-        src="img/apartment-02.jpg"
+        src="img/1.png"
         width="260"
       />
     </a>
@@ -35,13 +35,12 @@ exports[`Main correctly renders after relaunch 1`] = `
           className="place-card__price-value"
         >
           €
-          132
+          120
         </b>
         <span
           className="place-card__price-text"
         >
-          / 
-          night
+          / night
         </span>
       </div>
       <button
@@ -73,7 +72,7 @@ exports[`Main correctly renders after relaunch 1`] = `
         <span
           style={
             Object {
-              "width": "100%",
+              "width": "4.8%",
             }
           }
         />
@@ -90,13 +89,13 @@ exports[`Main correctly renders after relaunch 1`] = `
       <a
         href="#"
       >
-        Canal View Prinsengracht
+        Beautiful & luxurious studio at great location
       </a>
     </h2>
     <p
       className="place-card__type"
     >
-      Aparment
+      apartment
     </p>
   </div>
 </article>

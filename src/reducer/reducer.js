@@ -6,7 +6,8 @@ import {
   SORT_OPEN_TOGGLE,
   SORT_ACTIVE_OPTION_CHANGE,
   SORT_PROPERTIES,
-  ACTIVATE_CARD
+  ACTIVATE_CARD,
+  REQUIRED_AUTHORIZATION
 } from './action-type/action-type.js';
 
 function reducer(state = initialState, action) {
@@ -25,6 +26,8 @@ function reducer(state = initialState, action) {
       return Object.assign({}, state, {properties: action.payload});
     case ACTIVATE_CARD:
       return Object.assign({}, state, {activeCard: action.payload});
+    case REQUIRED_AUTHORIZATION:
+      return Object.assign({}, state, {isAuthorizationRequired: action.payload});
     default:
       return state;
   }

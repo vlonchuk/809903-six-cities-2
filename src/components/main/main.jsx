@@ -7,6 +7,7 @@ import SortType from '../../consts/sort-type.js';
 import CitiesPlaces from '../cities-places/cities-places.jsx';
 import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
+import Operation from './../../reducer/operation/operation.js';
 
 class Main extends PureComponent {
   render() {
@@ -86,7 +87,7 @@ class Main extends PureComponent {
     if (this.props.city === ``) {
       const cities = [...new Set(this.props.offers.map((el) => el.city.name))];
       const city = cities[getRand(cities.length)];
-      this.props.onCityClick(city, SortType.POPULAR);
+      this.props.onCityClick(city, SortType.POPULAR, this.props.offers);
     }
   }
 }
@@ -103,11 +104,10 @@ Main.propTypes = {
       }),
     }),
     title: PropTypes.string.isRequired,
-    imgSrc: PropTypes.string.isRequired,
+    previewImage: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    priceCurrency: PropTypes.string.isRequired,
-    priceValue: PropTypes.number.isRequired,
-    priceText: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
     location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
@@ -126,11 +126,10 @@ Main.propTypes = {
       }),
     }),
     title: PropTypes.string.isRequired,
-    imgSrc: PropTypes.string.isRequired,
+    previewImage: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    priceCurrency: PropTypes.string.isRequired,
-    priceValue: PropTypes.number.isRequired,
-    priceText: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
     location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
@@ -160,13 +159,12 @@ Main.propTypes = {
       }),
     }),
     title: PropTypes.string.isRequired,
-    imgSrc: PropTypes.string.isRequired,
+    previewImage: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    priceCurrency: PropTypes.string.isRequired,
-    priceValue: PropTypes.number.isRequired,
-    priceText: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
-    coor: PropTypes.shape({
+    location: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
     }),
@@ -184,11 +182,11 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadOffers: () => dispatch(ActionCreator.loadOffers()),
+  loadOffers: () => dispatch(Operation.loadOffers()),
 
-  onCityClick: (city, sortActiveOption) => {
+  onCityClick: (city, sortActiveOption, offers) => {
     dispatch(ActionCreator.changeCity(city));
-    const getPropertiesAction = ActionCreator.getProperties(city);
+    const getPropertiesAction = ActionCreator.getProperties(city, offers);
     if (sortActiveOption === SortType.POPULAR) {
       dispatch(getPropertiesAction);
     } else {

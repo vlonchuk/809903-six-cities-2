@@ -1,21 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import PlacesFound from './places-found';
+import offers from './../../mocks/offers.js';
 
 it(`PlacesFound correctly renders after relaunch`, () => {
-  const city = `Paris`;
-  const properties = [{
-    id: `prop-2`,
-    caption: `Wood and stone place`,
-    imgSrc: `img/room.jpg`,
-    type: `Private room`,
-    priceCurrency: `€`,
-    priceValue: 80,
-    priceText: `night`,
-  }];
-
   const tree = renderer
-    .create(<PlacesFound city={city} properties={properties}/>)
+    .create(<PlacesFound city={offers[0].city.name} properties={offers}/>)
     .toJSON();
 
   expect(tree).toMatchSnapshot();

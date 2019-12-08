@@ -1,30 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import Sort from './sort';
+import SortType from './../../consts/sort-type.js';
+import offers from './../../mocks/offers.js';
 
 it(`Sort correctly renders after relaunch`, () => {
-  const properties = [
-    {
-      id: `prop-2`,
-      city: `Paris`,
-      caption: `Wood and stone place`,
-      imgSrc: `img/room.jpg`,
-      type: `Private room`,
-      priceCurrency: `€`,
-      priceValue: 80,
-      priceText: `night`,
-      rating: 90,
-    },
-  ];
-
-
-  const options = [
-    `Popular`,
-    `Price: low to high`,
-    `Price: high to low`,
-    `Top rated first`
-  ];
-
+  const options = Object.values(SortType);
   const onArrowClick = jest.fn();
   const onOptionClick = jest.fn();
 
@@ -32,7 +13,7 @@ it(`Sort correctly renders after relaunch`, () => {
     .create(<Sort options={options}
       activeOption={options[0]}
       opened={true}
-      properties={properties}
+      properties={offers}
       onArrowClick={onArrowClick}
       onOptionClick={onOptionClick}
     />)

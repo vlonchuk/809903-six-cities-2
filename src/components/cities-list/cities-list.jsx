@@ -7,7 +7,7 @@ const CitiesList = ({onCityClick, selectedCity, offers, sortActiveOption}) => {
   return <ul className="locations__list tabs__list">
     {cities.map((city) =>
       <CitiesListItem key={city} city={city} selected={city === selectedCity}
-        onCityClick={onCityClick} sortActiveOption={sortActiveOption}/>
+        onCityClick={onCityClick} sortActiveOption={sortActiveOption} offers={offers}/>
     )}
   </ul>;
 };
