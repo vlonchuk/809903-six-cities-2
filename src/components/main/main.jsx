@@ -8,9 +8,20 @@ import CitiesPlaces from '../cities-places/cities-places.jsx';
 import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
 import Operation from './../../reducer/operation/operation.js';
+import Login from './../login/login.jsx';
 
 class Main extends PureComponent {
   render() {
+    return this.props.isAuthorizationRequired ?
+      this.renderLoginPage() :
+      this.renderMainPage();
+  }
+
+  renderLoginPage() {
+    return <Login onLogin={this.props.onLogin}/>;
+  }
+
+  renderMainPage() {
     const {
       properties,
       offers,
@@ -24,6 +35,7 @@ class Main extends PureComponent {
       onClick,
       onPlaceCardMouseEnter,
       onPlaceCardMouseLeave,
+      user
     } = this.props;
     const noPlaces = (city !== `` && properties.length <= 0);
     const mainClassName = `page__main page__main--index` + (noPlaces ? ` page__main--index-empty` : ``);
@@ -43,7 +55,7 @@ class Main extends PureComponent {
                   <a className="header__nav-link header__nav-link--profile" href="#">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                    <span className="header__user-name user__name">{user ? user.email : `Sign in`}</span>
                   </a>
                 </li>
               </ul>
@@ -93,6 +105,14 @@ class Main extends PureComponent {
 }
 
 Main.propTypes = {
+  isAuthorizationRequired: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string.isRequired,
+    isPro: PropTypes.bool.isRequired,
+  }),
   offers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     city: PropTypes.shape({
@@ -148,6 +168,7 @@ Main.propTypes = {
   onSortOptionClick: PropTypes.func.isRequired,
   onPlaceCardMouseEnter: PropTypes.func.isRequired,
   onPlaceCardMouseLeave: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
   activeCard: PropTypes.shape({
     id: PropTypes.number.isRequired,
     city: PropTypes.shape({
@@ -179,6 +200,8 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   sortActiveOption: state.sortActiveOption,
   sortOpened: state.sortOpened,
   activeCard: state.activeCard,
+  isAuthorizationRequired: state.isAuthorizationRequired,
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -211,6 +234,10 @@ const mapDispatchToProps = (dispatch) => ({
   onPlaceCardMouseLeave: () => {
     dispatch(ActionCreator.activateCard(null));
   },
+
+  onLogin: (email, password) => {
+    dispatch(Operation.login(email, password));
+  }
 });
 
 const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);

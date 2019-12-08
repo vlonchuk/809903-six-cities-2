@@ -1,5 +1,5 @@
 import ActionCreator from './../action-creator/action-creator.js';
-import {convertRawOffersData} from './../../utils.js';
+import {convertRawOffersData, convertRawUserData} from './../../utils.js';
 
 const Operation = {
   checkLogin: () => {
@@ -18,9 +18,11 @@ const Operation = {
     return (dispatch, _getState, api) => {
       return api
         .post(`/login`, {email, password})
-        .then((res) => {
-          if (res.status === 200) {
+        .then((response) => {
+          if (response.status === 200) {
+            const user = convertRawUserData(response.data);
             dispatch(ActionCreator.requireAuthorization(false));
+            dispatch(ActionCreator.saveUser(user));
           }
         });
     };

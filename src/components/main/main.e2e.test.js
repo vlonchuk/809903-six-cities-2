@@ -22,6 +22,8 @@ it(`Main correctly functions after relaunch`, () => {
     onPlaceCardMouseLeave={jest.fn()}
     selectedCity={``}
     onClick={clickHandler}
+    isAuthorizationRequired={false}
+    onLogin={jest.fn()}
     loadOffers={jest.fn()} />);
   const anchor = app.find(`CitiesPlaces`).dive().find(`PlacesList`).dive().find(`PlaceCard`).dive().find(`.place-card__name > a`);
   anchor.simulate(`click`);

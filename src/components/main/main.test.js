@@ -20,6 +20,8 @@ it(`Main correctly renders after relaunch`, () => {
       onPlaceCardMouseLeave={jest.fn()}
       selectedCity={``}
       onClick={jest.fn()}
+      isAuthorizationRequired={false}
+      onLogin={jest.fn()}
     />)
     .toJSON();
 

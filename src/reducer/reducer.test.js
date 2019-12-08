@@ -7,42 +7,13 @@ import {
   SORT_ACTIVE_OPTION_CHANGE,
   SORT_PROPERTIES,
   ACTIVATE_CARD,
-  REQUIRED_AUTHORIZATION
+  REQUIRED_AUTHORIZATION,
+  SAVE_USER,
+  REMOVE_USER,
 } from './action-type/action-type.js';
 import initialState from './initial-state/initial-state.js';
-
-const offers = [
-  {
-    id: `prop-1`,
-    city: `Amsterdam`,
-    caption: `Beautiful & luxurious apartment at great location`,
-    imgSrc: `img/apartment-01.jpg`,
-    type: `Aparment`,
-    priceCurrency: `€`,
-    priceValue: 120,
-    priceText: `night`,
-    coor: {
-      latitude: 52.3909553943508,
-      longitude: 4.85309666406198
-    },
-    rating: 90,
-  },
-  {
-    id: `prop-2`,
-    city: `Amsterdam`,
-    caption: `Wood and stone place`,
-    imgSrc: `img/room.jpg`,
-    type: `Private room`,
-    priceCurrency: `€`,
-    priceValue: 80,
-    priceText: `night`,
-    coor: {
-      latitude: 52.369553943508,
-      longitude: 4.85309666406198
-    },
-    rating: 30,
-  },
-];
+import offers from './../mocks/offers.js';
+import user from './../mocks/user.js';
 
 describe(`Reducer works correctly`, () => {
   it(`Reducer without additional parameters should return initial state`, () => {
@@ -123,5 +94,18 @@ describe(`Reducer works correctly`, () => {
       type: REQUIRED_AUTHORIZATION,
       payload: false
     })).toEqual(Object.assign({}, initialState, {isAuthorizationRequired: false}));
+  });
+
+  it(`Reducer.SAVE_USER`, () => {
+    expect(reducer(initialState, {
+      type: SAVE_USER,
+      payload: user
+    })).toEqual(Object.assign({}, initialState, {user}));
+  });
+
+  it(`Reducer.REMOVE_USER`, () => {
+    expect(reducer(Object.assign({}, initialState, {user}), {
+      type: REMOVE_USER,
+    })).toEqual(Object.assign({}, initialState, {user: null}));
   });
 });

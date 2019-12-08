@@ -8,11 +8,14 @@ const configureAPI = (dispatch) => {
     withCredentials: true
   });
 
-  const onSuccess = (response) => response;
+  const onSuccess = (response) => {
+    return response;
+  };
 
   const onFail = (err) => {
     if (err.response.status === 403) {
-      dispatch(ActionCreator.requireAuthorization());
+      dispatch(ActionCreator.requireAuthorization(true));
+      dispatch(ActionCreator.removeUser());
     }
 
     return err;

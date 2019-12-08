@@ -7,8 +7,6 @@ import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
 import configureAPI from './api.js';
-import Operation from './reducer/operation/operation.js';
-import auth from './mocks/auth.js';
 
 const init = () => {
   const api = configureAPI((...args) => store.dispatch(...args));
@@ -18,8 +16,6 @@ const init = () => {
           applyMiddleware(thunk.withExtraArgument(api)),
           window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f)
   );
-
-  store.dispatch(Operation.login(auth.email, auth.password));
 
   ReactDOM.render(
       <Provider store={store}>
