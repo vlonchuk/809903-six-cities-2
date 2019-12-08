@@ -10,14 +10,29 @@ import {
   SORT_ACTIVE_OPTION_CHANGE,
   SORT_PROPERTIES,
   ACTIVATE_CARD,
-  REQUIRED_AUTHORIZATION
+  REQUIRED_AUTHORIZATION,
+  SAVE_USER,
+  REMOVE_USER,
 } from './../action-type/action-type.js';
 
 const ActionCreator = {
-  requireAuthorization: () => {
+  requireAuthorization: (isAuthorizationRequired) => {
     return {
       type: REQUIRED_AUTHORIZATION,
-      payload: true
+      payload: isAuthorizationRequired
+    };
+  },
+
+  saveUser: (user) => {
+    return {
+      type: SAVE_USER,
+      payload: user
+    };
+  },
+
+  removeUser: () => {
+    return {
+      type: REMOVE_USER,
     };
   },
 

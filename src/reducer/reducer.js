@@ -7,7 +7,9 @@ import {
   SORT_ACTIVE_OPTION_CHANGE,
   SORT_PROPERTIES,
   ACTIVATE_CARD,
-  REQUIRED_AUTHORIZATION
+  REQUIRED_AUTHORIZATION,
+  SAVE_USER,
+  REMOVE_USER,
 } from './action-type/action-type.js';
 
 function reducer(state = initialState, action) {
@@ -28,6 +30,10 @@ function reducer(state = initialState, action) {
       return Object.assign({}, state, {activeCard: action.payload});
     case REQUIRED_AUTHORIZATION:
       return Object.assign({}, state, {isAuthorizationRequired: action.payload});
+    case SAVE_USER:
+      return Object.assign({}, state, {user: action.payload});
+    case REMOVE_USER:
+      return Object.assign({}, state, {user: null});
     default:
       return state;
   }

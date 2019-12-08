@@ -36,9 +36,17 @@ const convertRawOffersData = (data) => {
   return data;
 };
 
+const convertRawUserData = (data) => {
+  return Object.assign({}, data, {
+    avatarUrl: data[`avatar_url`],
+    isPro: data[`is_pro`],
+  });
+};
+
 export {
   sortPropertiesByOption,
   getRand,
   getPropertiesByCity,
   convertRawOffersData,
+  convertRawUserData,
 };
