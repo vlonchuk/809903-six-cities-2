@@ -34,6 +34,7 @@ const Operation = {
         .get(`/hotels`)
         .then((response) => {
           let data = convertRawOffersData(response.data);
+          console.log(data);
           dispatch(ActionCreator.loadOffers(data));
         });
     };

@@ -24,6 +24,11 @@ const getPropertiesByCity = (city, offers) => {
                .slice();
 };
 
+const getPropertyById = (offers, id) => {
+  const properties = offers.filter((el) => el.id === id);
+  return properties.length > 0 ? properties[0] : null;
+};
+
 const convertRawOffersData = (data) => {
   data.forEach((el, i) => {
     const prcntRating = (Math.round(el.rating) * 100) / MAX_RATING;
@@ -49,4 +54,5 @@ export {
   getPropertiesByCity,
   convertRawOffersData,
   convertRawUserData,
+  getPropertyById,
 };

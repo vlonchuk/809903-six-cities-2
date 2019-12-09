@@ -9,16 +9,29 @@ import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
 import Operation from './../../reducer/operation/operation.js';
 import Login from './../login/login.jsx';
+import PageHeader from './../page-header/page-header.jsx';
+import Property from './../property/property.jsx';
+import mockOffers from './../../mocks/offers.js';
 
 class Main extends PureComponent {
   render() {
+    return this.renderProperty();
     return this.props.isAuthorizationRequired ?
       this.renderLoginPage() :
       this.renderMainPage();
   }
 
+  renderProperty() {
+    console.log(this.props.offers);
+    //return <Property id={1} user={this.props.user} offers={mockOffers}/>;
+    if (this.props.offers && this.props.offers.length > 0) {
+      return <Property id={1} user={this.props.user} offers={this.props.offers}/>;
+    }
+    return null;
+  }
+
   renderLoginPage() {
-    return <Login onLogin={this.props.onLogin}/>;
+    return <Login onLogin={this.props.onLogin} user={this.props.user}/>;
   }
 
   renderMainPage() {
@@ -41,29 +54,7 @@ class Main extends PureComponent {
     const mainClassName = `page__main page__main--index` + (noPlaces ? ` page__main--index-empty` : ``);
 
     return <div className="page page--gray page--main" key="app-main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"></img>
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">{user ? user.email : `Sign in`}</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <PageHeader user={user} />
       <main className={mainClassName}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
