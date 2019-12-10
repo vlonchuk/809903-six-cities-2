@@ -8,30 +8,19 @@ import CitiesPlaces from '../cities-places/cities-places.jsx';
 import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
 import Operation from './../../reducer/operation/operation.js';
-import Login from './../login/login.jsx';
 import PageHeader from './../page-header/page-header.jsx';
 import Property from './../property/property.jsx';
-import mockOffers from './../../mocks/offers.js';
 
 class Main extends PureComponent {
   render() {
     return this.renderProperty();
-    return this.props.isAuthorizationRequired ?
-      this.renderLoginPage() :
-      this.renderMainPage();
   }
 
   renderProperty() {
-    console.log(this.props.offers);
-    //return <Property id={1} user={this.props.user} offers={mockOffers}/>;
     if (this.props.offers && this.props.offers.length > 0) {
       return <Property id={1} user={this.props.user} offers={this.props.offers}/>;
     }
     return null;
-  }
-
-  renderLoginPage() {
-    return <Login onLogin={this.props.onLogin} user={this.props.user}/>;
   }
 
   renderMainPage() {

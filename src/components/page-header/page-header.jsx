@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 
 const PageHeader = ({user}) => {
   return <header className="header">
@@ -13,11 +14,11 @@ const PageHeader = ({user}) => {
         <nav className="header__nav">
           <ul className="header__nav-list">
             <li className="header__nav-item user">
-              <a className="header__nav-link header__nav-link--profile" href="#">
+              <Link to="/login" className="header__nav-link header__nav-link--profile" href="login">
                 <div className="header__avatar-wrapper user__avatar-wrapper">
                 </div>
                 <span className="header__user-name user__name">{user ? user.email : `Sign in`}</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

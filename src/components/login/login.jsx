@@ -1,6 +1,10 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import PageHeader from './../page-header/page-header.jsx';
+import {connect} from 'react-redux';
+import Operation from './../../reducer/operation/operation.js';
+import {Link} from "react-router-dom";
+import history from './../../history.js';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -24,7 +28,9 @@ class Login extends PureComponent {
       return;
     }
 
-    this.props.onLogin(email, password);
+    window.myHistory = history;
+    //await this.props.onLogin(email, password);
+    history.push(`/`);
   }
 
   render() {
@@ -48,9 +54,11 @@ class Login extends PureComponent {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
+              <Link to="/">
+                <a className="locations__item-link" href="#">
+                  <span>Amsterdam</span>
+                </a>
+              </Link>
             </div>
           </section>
         </div>
@@ -70,4 +78,17 @@ Login.propTypes = {
   }),
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  onLogin: (email, password) => {
+    dispatch(Operation.login(email, password));
+  }
+});
+
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  user: state.user,
+});
+
+const LoginWrapped = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export {Login};
+export default LoginWrapped;
