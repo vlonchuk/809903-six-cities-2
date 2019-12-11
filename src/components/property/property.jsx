@@ -2,7 +2,10 @@ import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import PageHeader from './../page-header/page-header.jsx';
-import {getPropertyById} from './../../utils.js';
+import {
+  getPropertyById,
+  convertRatingToPercent
+} from './../../utils.js';
 import {MAX_IMAGE_COUNT} from './../../consts/index.js';
 
 class Property extends PureComponent {
@@ -16,6 +19,7 @@ class Property extends PureComponent {
       <main className="page__main page__main--property">
         <section className="property">
           {this.renderProperty()}
+          {this.renderHost()}
         </section>
       </main>
     </div>;
@@ -24,6 +28,8 @@ class Property extends PureComponent {
   renderProperty() {
     const {property} = this.props;
     const bookmarkClass = `property__bookmark-button button` + (property.isFavorite ? ` property__bookmark-button--active` : ``);
+    const ratingWidth = convertRatingToPercent(property.rating);
+
     return <div className="property__gallery-container container">
       <div className="property__gallery">
         {
@@ -55,6 +61,15 @@ class Property extends PureComponent {
             <span className="visually-hidden">To bookmarks</span>
           </button>
         </div>
+
+        <div className="property__rating rating">
+          <div className="property__stars rating__stars">
+            <span style={{width: ratingWidth + `%`}}></span>
+            <span className="visually-hidden">Rating</span>
+          </div>
+          <span className="property__rating-value rating__value">{property.rating}</span>
+        </div>
+
         <ul className="property__features">
           <li className="property__feature property__feature--entire">
             {property.type}
@@ -81,6 +96,33 @@ class Property extends PureComponent {
             )}
           </ul>
         </div>
+      </div>
+    </div>;
+  }
+
+  renderHost() {
+    const {property} = this.props;
+    const avatarClass = `property__avatar-wrapper user__avatar-wrapper` + (property.host.isPro ? `property__avatar-wrapper--pro` : ``);
+    return <div classNameName="property__host">
+      <h2 className="property__host-title">Meet the host</h2>
+      <div className="property__host-user user">
+        <div className={avatarClass}>
+          <img className="property__avatar user__avatar" src={`./` + property.host.avatarUrl} width="74" height="74" alt="Host avatar"></img>
+        </div>
+        <span className="property__user-name">
+          {property.host.name}
+        </span>
+        {property.host.isPro ?
+          <span className="property__user-status">
+            Pro
+          </span>
+          : null
+        }
+      </div>
+      <div className="property__description">
+        <p className="property__text">
+          {property.description}
+        </p>
       </div>
     </div>;
   }
