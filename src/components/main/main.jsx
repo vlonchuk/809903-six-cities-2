@@ -3,29 +3,34 @@ import PropTypes from 'prop-types';
 import CitiesList from './../cities-list/cities-list.jsx';
 import {connect} from "react-redux";
 import ActionCreator from './../../reducer/action-creator/action-creator.js';
-import SortType from '../../consts/sort-type.js';
 import CitiesPlaces from '../cities-places/cities-places.jsx';
 import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
 import Operation from './../../reducer/operation/operation.js';
 import PageHeader from './../page-header/page-header.jsx';
 import Property from './../property/property.jsx';
+import {
+  getPropertiesByCity,
+  sortPropertiesByOption
+} from './../../utils.js';
 
 class Main extends PureComponent {
   render() {
+    //return this.renderMainPage();
     return this.renderProperty();
   }
 
   renderProperty() {
     if (this.props.offers && this.props.offers.length > 0) {
-      return <Property id={1} user={this.props.user} offers={this.props.offers}/>;
+//      return <Property id={1} user={this.props.user} offers={this.props.offers}/>;
+      return <Property id={1}/>;
     }
     return null;
   }
 
   renderMainPage() {
+    console.log(`renderMainPage`);
     const {
-      properties,
       offers,
       city,
       onCityClick,
@@ -37,8 +42,10 @@ class Main extends PureComponent {
       onClick,
       onPlaceCardMouseEnter,
       onPlaceCardMouseLeave,
+      onAddToFavorite,
       user
     } = this.props;
+    const properties = this.props.getCityProperties(city, sortActiveOption, offers);
     const noPlaces = (city !== `` && properties.length <= 0);
     const mainClassName = `page__main page__main--index` + (noPlaces ? ` page__main--index-empty` : ``);
 
@@ -64,7 +71,8 @@ class Main extends PureComponent {
               onSortOptionClick={onSortOptionClick}
               onClick={onClick}
               onPlaceCardMouseEnter={onPlaceCardMouseEnter}
-              onPlaceCardMouseLeave={onPlaceCardMouseLeave} />
+              onPlaceCardMouseLeave={onPlaceCardMouseLeave}
+              onAddToFavorite={onAddToFavorite} />
           }
         </div>
       </main>
@@ -79,7 +87,7 @@ class Main extends PureComponent {
     if (this.props.city === ``) {
       const cities = [...new Set(this.props.offers.map((el) => el.city.name))];
       const city = cities[getRand(cities.length)];
-      this.props.onCityClick(city, SortType.POPULAR, this.props.offers);
+      this.props.onCityClick(city);
     }
   }
 }
@@ -107,28 +115,7 @@ Main.propTypes = {
     previewImage: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    isPremium: PropTypes.bool.isRequired,
-    rating: PropTypes.number.isRequired,
-    location: PropTypes.shape({
-      latitude: PropTypes.number.isRequired,
-      longitude: PropTypes.number.isRequired,
-      zoom: PropTypes.number.isRequired,
-    }),
-  })).isRequired,
-  properties: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    city: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      location: PropTypes.shape({
-        latitude: PropTypes.number.isRequired,
-        longitude: PropTypes.number.isRequired,
-        zoom: PropTypes.number.isRequired,
-      }),
-    }),
-    title: PropTypes.string.isRequired,
-    previewImage: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
     isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
     location: PropTypes.shape({
@@ -139,6 +126,7 @@ Main.propTypes = {
   })).isRequired,
   city: PropTypes.string.isRequired,
   loadOffers: PropTypes.func,
+  getCityProperties: PropTypes.func,
   onCityClick: PropTypes.func,
   onClick: PropTypes.func,
   sortOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -148,6 +136,7 @@ Main.propTypes = {
   onSortOptionClick: PropTypes.func.isRequired,
   onPlaceCardMouseEnter: PropTypes.func.isRequired,
   onPlaceCardMouseLeave: PropTypes.func.isRequired,
+  onAddToFavorite: PropTypes.func.isRequired,
   onLogin: PropTypes.func.isRequired,
   activeCard: PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -163,6 +152,7 @@ Main.propTypes = {
     previewImage: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
     isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
     location: PropTypes.shape({
@@ -175,7 +165,6 @@ Main.propTypes = {
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   offers: state.offers,
   city: state.city,
-  properties: state.properties,
   sortOptions: state.sortOptions,
   sortActiveOption: state.sortActiveOption,
   sortOpened: state.sortOpened,
@@ -187,23 +176,20 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 const mapDispatchToProps = (dispatch) => ({
   loadOffers: () => dispatch(Operation.loadOffers()),
 
-  onCityClick: (city, sortActiveOption, offers) => {
+  getCityProperties: (city, sortOption, offers) => {
+    return sortPropertiesByOption(sortOption, getPropertiesByCity(city, offers));
+  },
+
+  onCityClick: (city) => {
     dispatch(ActionCreator.changeCity(city));
-    const getPropertiesAction = ActionCreator.getProperties(city, offers);
-    if (sortActiveOption === SortType.POPULAR) {
-      dispatch(getPropertiesAction);
-    } else {
-      dispatch(ActionCreator.sortProperties(sortActiveOption, getPropertiesAction.payload));
-    }
   },
 
   onSortArrowClick: (opened) => {
     dispatch(ActionCreator.sortOpenToggle(opened));
   },
 
-  onSortOptionClick: (option, properties) => {
+  onSortOptionClick: (option) => {
     dispatch(ActionCreator.sortOpenToggle(true));
-    dispatch(ActionCreator.sortProperties(option, properties));
     dispatch(ActionCreator.sortActiveOptionChange(option));
   },
 
@@ -217,7 +203,11 @@ const mapDispatchToProps = (dispatch) => ({
 
   onLogin: (email, password) => {
     dispatch(Operation.login(email, password));
-  }
+  },
+
+  onAddToFavorite: (hotelId, status) => {
+    dispatch(Operation.addToFavorite(hotelId, status));
+  },
 });
 
 const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);

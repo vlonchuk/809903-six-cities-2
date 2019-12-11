@@ -3,7 +3,7 @@ import {convertRawOffersData, convertRawUserData} from './../../utils.js';
 
 const Operation = {
   checkLogin: () => {
-    return (dispatch, _getState, api) => {
+    return (dispatch, _, api) => {
       return api
         .get(`/login`)
         .then((res) => {
@@ -15,7 +15,7 @@ const Operation = {
   },
 
   login: (email, password) => {
-    return (dispatch, _getState, api) => {
+    return (dispatch, _, api) => {
       return api
         .post(`/login`, {email, password})
         .then((response) => {
@@ -29,13 +29,24 @@ const Operation = {
   },
 
   loadOffers: () => {
-    return (dispatch, _getState, api) => {
+    return (dispatch, _, api) => {
       return api
         .get(`/hotels`)
         .then((response) => {
           let data = convertRawOffersData(response.data);
-          console.log(data);
           dispatch(ActionCreator.loadOffers(data));
+        });
+    };
+  },
+
+  addToFavorite: (hotelId, status) => {
+    return (dispatch, _, api) => {
+      return api
+        .post(`/favorite/${hotelId}/${status}`)
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch(Operation.loadOffers());
+          }
         });
     };
   },

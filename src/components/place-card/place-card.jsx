@@ -5,21 +5,27 @@ class PlaceCard extends PureComponent {
   constructor(props) {
     super(props);
 
-    this._onMouseEnter = this.onMouseEnter.bind(this);
-    this._onMouseLeave = this.onMouseLeave.bind(this);
+    this._mouseEnterHandler = this.mouseEnterHandler.bind(this);
+    this._mouseLeaveHandler = this.mouseLeaveHandler.bind(this);
+    this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
   }
 
-  onMouseEnter() {
+  mouseEnterHandler() {
     this.props.onMouseEnter(this.props.data);
   }
 
-  onMouseLeave() {
+  mouseLeaveHandler() {
     this.props.onMouseLeave();
   }
 
+  addToFavoriteHandler() {
+    this.props.onAddToFavorite(this.props.data.id, this.props.data.isFavorite ? 0 : 1);
+  }
+
   render() {
+    const bookmarkClass = `place-card__bookmark-button button` + (this.props.data.isFavorite ? ` place-card__bookmark-button--active` : ``);
     return <article className="cities__place-card place-card" id={this.props.data.id}
-      onMouseEnter={this._onMouseEnter} onMouseLeave={this._onMouseLeave}>
+      onMouseEnter={this._mouseEnterHandler} onMouseLeave={this._mouseLeaveHandler}>
       {
         this.props.data.isPremium ?
           <div className="place-card__mark">
@@ -40,7 +46,7 @@ class PlaceCard extends PureComponent {
             <b className="place-card__price-value">{`€`}{this.props.data.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button className={bookmarkClass} type="button" onClick={this._addToFavoriteHandler}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -69,9 +75,11 @@ PlaceCard.propTypes = {
     previewImage: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
     isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
   }),
+  onAddToFavorite: PropTypes.func.isRequired,
   onClick: PropTypes.func,
   onMouseEnter: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,

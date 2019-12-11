@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import PageHeader from './../page-header/page-header.jsx';
 import {connect} from 'react-redux';
 import Operation from './../../reducer/operation/operation.js';
-import {Link} from "react-router-dom";
 import history from './../../history.js';
 
 class Login extends PureComponent {
@@ -15,7 +14,7 @@ class Login extends PureComponent {
     this._onLogin = this.onLogin.bind(this);
   }
 
-  onLogin(evt) {
+  async onLogin(evt) {
     evt.preventDefault();
     if (!(this._mapEmail.current && this._mapPassword.current)) {
       return;
@@ -28,8 +27,7 @@ class Login extends PureComponent {
       return;
     }
 
-    window.myHistory = history;
-    //await this.props.onLogin(email, password);
+    await this.props.onLogin(email, password);
     history.push(`/`);
   }
 
@@ -54,11 +52,9 @@ class Login extends PureComponent {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link to="/">
-                <a className="locations__item-link" href="#">
-                  <span>Amsterdam</span>
-                </a>
-              </Link>
+              <a className="locations__item-link" href="#">
+                <span>Amsterdam</span>
+              </a>
             </div>
           </section>
         </div>

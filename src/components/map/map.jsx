@@ -101,7 +101,6 @@ Map.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  properties: state.properties,
   activeCard: state.activeCard,
 });
 

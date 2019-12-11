@@ -7,7 +7,7 @@ import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
 import configureAPI from './api.js';
-import {BrowserRouter, Router} from 'react-router-dom';
+import {Router} from 'react-router-dom';
 import history from './history';
 
 const init = () => {

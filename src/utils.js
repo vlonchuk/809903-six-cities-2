@@ -34,6 +34,7 @@ const convertRawOffersData = (data) => {
     const prcntRating = (Math.round(el.rating) * 100) / MAX_RATING;
     data[i] = Object.assign({}, el, {
       previewImage: el[`preview_image`],
+      isFavorite: el[`is_favorite`],
       isPremium: el[`is_premium`],
       rating: prcntRating,
     });

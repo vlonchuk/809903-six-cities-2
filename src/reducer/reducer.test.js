@@ -2,10 +2,8 @@ import reducer from './reducer';
 import {
   LOAD_OFFERS,
   CHANGE_CITY,
-  GET_PROPERTIES,
   SORT_OPEN_TOGGLE,
   SORT_ACTIVE_OPTION_CHANGE,
-  SORT_PROPERTIES,
   ACTIVATE_CARD,
   REQUIRED_AUTHORIZATION,
   SAVE_USER,
@@ -35,14 +33,6 @@ describe(`Reducer works correctly`, () => {
     })).toEqual(Object.assign({}, initialState, {city: newCity}));
   });
 
-  it(`Reducer correctly gets properties`, () => {
-    const oldState = Object.assign({}, initialState, {city: newCity});
-    expect(reducer(oldState, {
-      type: GET_PROPERTIES,
-      payload: offers
-    })).toEqual(Object.assign({}, oldState, {properties: offers}));
-  });
-
   it(`Reducer.SORT_OPEN_TOGGLE check OPEN sort list `, () => {
     expect(reducer(initialState, {
       type: SORT_OPEN_TOGGLE,
@@ -64,15 +54,6 @@ describe(`Reducer works correctly`, () => {
       type: SORT_ACTIVE_OPTION_CHANGE,
       payload: newSortActiveOption
     })).toEqual(Object.assign({}, initialState, {sortActiveOption: newSortActiveOption}));
-  });
-
-  it(`Reducer.SORT_PROPERTIES  `, () => {
-    const oldState = Object.assign({}, initialState, {city: newCity, properties: offers});
-    const newProperties = offers.slice().sort((p1, p2) => p2.rating - p1.rating);
-    expect(reducer(oldState, {
-      type: SORT_PROPERTIES,
-      payload: newProperties
-    })).toEqual(Object.assign({}, oldState, {properties: newProperties}));
   });
 
   it(`Reducer.ACTIVATE_CARD`, () => {

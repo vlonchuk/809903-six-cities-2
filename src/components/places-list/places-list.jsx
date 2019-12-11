@@ -18,6 +18,7 @@ class PlacesList extends PureComponent {
       <PlaceCard key={item.id} data={item} onClick={this.props.onClick}
         onMouseEnter={this.props.onPlaceCardMouseEnter}
         onMouseLeave={this.props.onPlaceCardMouseLeave}
+        onAddToFavorite={this.props.onAddToFavorite}
       />
     ));
   }
@@ -38,6 +39,7 @@ PlacesList.propTypes = {
     previewImage: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
     isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
     location: PropTypes.shape({
@@ -49,6 +51,7 @@ PlacesList.propTypes = {
   onClick: PropTypes.func,
   onPlaceCardMouseEnter: PropTypes.func.isRequired,
   onPlaceCardMouseLeave: PropTypes.func.isRequired,
+  onAddToFavorite: PropTypes.func.isRequired,
 };
 
 export default PlacesList;
