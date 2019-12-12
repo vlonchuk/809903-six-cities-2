@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 
 class PlaceCard extends PureComponent {
   constructor(props) {
@@ -36,9 +37,9 @@ class PlaceCard extends PureComponent {
       }
 
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={`/property/` + this.props.data.id}>
           <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">

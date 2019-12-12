@@ -11,6 +11,14 @@ import {MAX_IMAGE_COUNT} from './../../consts/index.js';
 class Property extends PureComponent {
   constructor(props) {
     super(props);
+
+    const {
+      match: {
+        params: {
+          offerId: hotelIdText
+        }
+      },
+    } = props;
   }
 
   render() {
@@ -134,6 +142,11 @@ Property.propTypes = {
   user: PropTypes.object,
   offers: PropTypes.array.isRequired,
   property: PropTypes.object,
+  match: shape({
+    params: shape({
+      offerId: string.isRequired,
+    }).isRequired
+  }).isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
