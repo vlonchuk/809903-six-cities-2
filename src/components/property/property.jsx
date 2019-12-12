@@ -11,14 +11,6 @@ import {MAX_IMAGE_COUNT} from './../../consts/index.js';
 class Property extends PureComponent {
   constructor(props) {
     super(props);
-
-    const {
-      match: {
-        params: {
-          offerId: hotelIdText
-        }
-      },
-    } = props;
   }
 
   render() {
@@ -27,7 +19,6 @@ class Property extends PureComponent {
       <main className="page__main page__main--property">
         <section className="property">
           {this.renderProperty()}
-          {this.renderHost()}
         </section>
       </main>
     </div>;
@@ -57,52 +48,53 @@ class Property extends PureComponent {
               </div>
               : null
           }
-        </div>
-        <div className="property__name-wrapper">
-          <h1 className="property__name">
-            {property.title}
-          </h1>
-          <button className={bookmarkClass} type="button">
-            <svg className="property__bookmark-icon" width="31" height="33">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
-        </div>
-
-        <div className="property__rating rating">
-          <div className="property__stars rating__stars">
-            <span style={{width: ratingWidth + `%`}}></span>
-            <span className="visually-hidden">Rating</span>
+          <div className="property__name-wrapper">
+            <h1 className="property__name">
+              {property.title}
+            </h1>
+            <button className={bookmarkClass} type="button">
+              <svg className="property__bookmark-icon" width="31" height="33">
+                <use xlinkHref="#icon-bookmark"></use>
+              </svg>
+              <span className="visually-hidden">To bookmarks</span>
+            </button>
           </div>
-          <span className="property__rating-value rating__value">{property.rating}</span>
-        </div>
 
-        <ul className="property__features">
-          <li className="property__feature property__feature--entire">
-            {property.type}
-          </li>
-          <li className="property__feature property__feature--bedrooms">
-            {property.bedrooms} Bedroom{property.bedrooms > 1 ? `s` : ``}
-          </li>
-          <li className="property__feature property__feature--adults">
-            Max {property.maxAdults} adult{property.maxAdults > 1 ? `s` : ``}
-          </li>
-        </ul>
-        <div className="property__price">
-          <b className="property__price-value">&euro;{property.price}</b>
-          <span className="property__price-text">&nbsp;night</span>
-        </div>
+          <div className="property__rating rating">
+            <div className="property__stars rating__stars">
+              <span style={{width: ratingWidth + `%`}}></span>
+              <span className="visually-hidden">Rating</span>
+            </div>
+            <span className="property__rating-value rating__value">{property.rating}</span>
+          </div>
 
-        <div className="property__inside">
-          <h2 className="property__inside-title">What&apos;s inside</h2>
-          <ul className="property__inside-list">
-            {property.goods.map((el, i) =>
-              <li className="property__inside-item" key={i}>
-                {el}
-              </li>
-            )}
+          <ul className="property__features">
+            <li className="property__feature property__feature--entire">
+              {property.type}
+            </li>
+            <li className="property__feature property__feature--bedrooms">
+              {property.bedrooms} Bedroom{property.bedrooms > 1 ? `s` : ``}
+            </li>
+            <li className="property__feature property__feature--adults">
+              Max {property.maxAdults} adult{property.maxAdults > 1 ? `s` : ``}
+            </li>
           </ul>
+          <div className="property__price">
+            <b className="property__price-value">&euro;{property.price}</b>
+            <span className="property__price-text">&nbsp;night</span>
+          </div>
+
+          <div className="property__inside">
+            <h2 className="property__inside-title">What&apos;s inside</h2>
+            <ul className="property__inside-list">
+              {property.goods.map((el, i) =>
+                <li className="property__inside-item" key={i}>
+                  {el}
+                </li>
+              )}
+            </ul>
+          </div>
+          {this.renderHost()}
         </div>
       </div>
     </div>;
@@ -111,7 +103,7 @@ class Property extends PureComponent {
   renderHost() {
     const {property} = this.props;
     const avatarClass = `property__avatar-wrapper user__avatar-wrapper` + (property.host.isPro ? `property__avatar-wrapper--pro` : ``);
-    return <div classNameName="property__host">
+    return <div className="property__host">
       <h2 className="property__host-title">Meet the host</h2>
       <div className="property__host-user user">
         <div className={avatarClass}>
@@ -142,11 +134,6 @@ Property.propTypes = {
   user: PropTypes.object,
   offers: PropTypes.array.isRequired,
   property: PropTypes.object,
-  match: shape({
-    params: shape({
-      offerId: string.isRequired,
-    }).isRequired
-  }).isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {

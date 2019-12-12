@@ -9,7 +9,6 @@ const App = () => {
     <Switch>
       <Route path="/" exact component={Main} />
       <Route path="/login" exact component={Login} />
-      <Route path="/property/:id" exact component={Property} />
     </Switch>
   </section>;
 };
