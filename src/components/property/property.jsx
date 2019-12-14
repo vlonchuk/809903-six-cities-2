@@ -5,14 +5,26 @@ import PageHeader from './../page-header/page-header.jsx';
 import Operation from './../../reducer/operation/operation.js';
 import {
   getPropertyById,
-  convertRatingToPercent
+  convertRatingToPercent,
+  getPropertiesByCity,
+  getNearbyPlaces,
 } from './../../utils.js';
-import {MAX_IMAGE_COUNT} from './../../consts/index.js';
+import {
+  MAX_IMAGE_COUNT,
+  MAX_NEARBY_PLACES,
+} from './../../consts/index.js';
+import ReviewList from './../review-list/review-list.jsx';
+import Map from './../map/map.jsx';
+import PlacesList from './../places-list/places-list.jsx';
 
 class Property extends PureComponent {
   constructor(props) {
     super(props);
     this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.loadComments(this.props.property.id);
   }
 
   addToFavoriteHandler() {
@@ -25,8 +37,19 @@ class Property extends PureComponent {
       <main className="page__main page__main--property">
         <section className="property">
           {this.renderProperty()}
+          <Map mapClass="property__map" properties={this.props.properties}/>
+          {this.renderNearbyProperties()}
         </section>
       </main>
+    </div>;
+  }
+
+  renderNearbyProperties() {
+    return <div className="container">
+      <section className="near-places places">
+        <h2 className="near-places__title">Other places in the neighbourhood</h2>
+        <PlacesList forCity={false} key="PlacesList" properties={this.props.properties} />
+      </section>
     </div>;
   }
 
@@ -101,6 +124,7 @@ class Property extends PureComponent {
             </ul>
           </div>
           {this.renderHost()}
+          {this.renderComments()}
         </div>
       </div>
     </div>;
@@ -133,21 +157,37 @@ class Property extends PureComponent {
     </div>;
   }
 
+  renderComments() {
+    return <ReviewList comments={this.props.comments} />;
+  }
 }
 
 Property.propTypes = {
   id: PropTypes.number.isRequired,
   user: PropTypes.object,
   property: PropTypes.object,
+  properties: PropTypes.array.isRequired,
+  comments: PropTypes.array.isRequired,
   onAddToFavorite: PropTypes.func,
+  loadComments: PropTypes.func,
+};
+
+const getNearbyProperties = (property, offers) => {
+  const properties = getPropertiesByCity(property.city.name, offers);
+  const exceptCurrent = properties.filter((el) => el.id !== property.id);
+  return getNearbyPlaces(exceptCurrent, property, MAX_NEARBY_PLACES);
 };
 
 const mapStateToProps = (state, ownProps) => {
   const id = Number.parseInt(ownProps.match.params.id, 10);
+  const property = getPropertyById(state.offers, id);
+
   return Object.assign({}, ownProps, {
     id,
     user: state.user,
-    property: getPropertyById(state.offers, id),
+    property,
+    comments: state.comments,
+    properties: getNearbyProperties(property, state.offers),
   });
 };
 
@@ -155,6 +195,10 @@ const mapDispathToProps = (dispatch) => ({
   onAddToFavorite: (hotelId, status) => {
     dispatch(Operation.addToFavorite(hotelId, status));
   },
+
+  loadComments: async (hotelId) => {
+    await dispatch(Operation.loadComments(hotelId));
+  }
 });
 
 const PropertyWrapped = connect(mapStateToProps, mapDispathToProps)(Property);

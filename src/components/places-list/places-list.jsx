@@ -1,21 +1,25 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from "react-redux";
+import ActionCreator from './../../reducer/action-creator/action-creator.js';
+import Operation from './../../reducer/operation/operation.js';
 import PlaceCard from './../place-card/place-card.jsx';
 
 class PlacesList extends PureComponent {
   constructor(props) {
     super(props);
+    this._placesClass = this.props.forCity ? `cities__places-list tabs__content` : `near-places__list`;
   }
 
   render() {
-    return <div className="cities__places-list places__list tabs__content">
+    return <div className={`${this._placesClass} places__list`}>
       {this.properties}
     </div>;
   }
 
   get properties() {
     return this.props.properties.map((item) => (
-      <PlaceCard key={item.id} data={item} onClick={this.props.onClick}
+      <PlaceCard forCity={this.props.forCity} key={item.id} data={item} onClick={this.props.onClick}
         onMouseEnter={this.props.onPlaceCardMouseEnter}
         onMouseLeave={this.props.onPlaceCardMouseLeave}
         onAddToFavorite={this.props.onAddToFavorite}
@@ -25,6 +29,7 @@ class PlacesList extends PureComponent {
 }
 
 PlacesList.propTypes = {
+  forCity: PropTypes.bool.isRequired,
   properties: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     city: PropTypes.shape({
@@ -54,4 +59,21 @@ PlacesList.propTypes = {
   onAddToFavorite: PropTypes.func.isRequired,
 };
 
-export default PlacesList;
+const mapDispatchToProps = (dispatch) => ({
+  onPlaceCardMouseEnter: (card) => {
+    dispatch(ActionCreator.activateCard(card));
+  },
+
+  onPlaceCardMouseLeave: () => {
+    dispatch(ActionCreator.activateCard(null));
+  },
+
+  onAddToFavorite: (hotelId, status) => {
+    dispatch(Operation.addToFavorite(hotelId, status));
+  },
+});
+
+const PlacesListWrapped = connect(null, mapDispatchToProps)(PlacesList);
+
+export {PlacesList};
+export default PlacesListWrapped;

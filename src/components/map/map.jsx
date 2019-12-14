@@ -9,17 +9,17 @@ class Map extends PureComponent {
 
     this._mapRef = React.createRef();
     this._icon = leaflet.icon({
-      iconUrl: `img/pin.svg`,
+      iconUrl: `/img/pin.svg`,
       iconSize: [30, 30]
     });
     this._iconActive = leaflet.icon({
-      iconUrl: `img/pin-active.svg`,
+      iconUrl: `/img/pin-active.svg`,
       iconSize: [30, 30]
     });
   }
 
   render() {
-    return <section ref={this._mapRef} className="cities__map map" id="map">
+    return <section ref={this._mapRef} className={`${this.props.mapClass} map`} id="map">
     </section>;
   }
 
@@ -74,6 +74,7 @@ class Map extends PureComponent {
 }
 
 Map.propTypes = {
+  mapClass: PropTypes.string.isRequired,
   properties: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     city: PropTypes.shape({

@@ -8,10 +8,12 @@ import {
   REQUIRED_AUTHORIZATION,
   SAVE_USER,
   REMOVE_USER,
+  LOAD_COMMENTS,
 } from './action-type/action-type.js';
 import initialState from './initial-state/initial-state.js';
 import offers from './../mocks/offers.js';
 import user from './../mocks/user.js';
+import comments from './../mocks/comments.js';
 
 describe(`Reducer works correctly`, () => {
   it(`Reducer without additional parameters should return initial state`, () => {
@@ -88,5 +90,12 @@ describe(`Reducer works correctly`, () => {
     expect(reducer(Object.assign({}, initialState, {user}), {
       type: REMOVE_USER,
     })).toEqual(Object.assign({}, initialState, {user: null}));
+  });
+
+  it(`Reducer correctly loads comments`, () => {
+    expect(reducer(initialState, {
+      type: LOAD_COMMENTS,
+      payload: comments
+    })).toEqual(Object.assign({}, initialState, {comments}));
   });
 });

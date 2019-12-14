@@ -1,5 +1,9 @@
 import ActionCreator from './../action-creator/action-creator.js';
-import {convertRawOffersData, convertRawUserData} from './../../utils.js';
+import {
+  convertRawOffersData,
+  convertRawUserData,
+  convertRawCommentData,
+} from './../../utils.js';
 
 const Operation = {
   checkLogin: () => {
@@ -46,6 +50,19 @@ const Operation = {
         .then((response) => {
           if (response.status === 200) {
             dispatch(Operation.loadOffers());
+          }
+        });
+    };
+  },
+
+  loadComments: (hotelId) => {
+    return (dispatch, _, api) => {
+      return api
+        .get(`/comments/${hotelId}`)
+        .then((response) => {
+          if (response.status === 200) {
+            const data = convertRawCommentData(response.data);
+            dispatch(ActionCreator.loadComments(data));
           }
         });
     };

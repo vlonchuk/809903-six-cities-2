@@ -5,8 +5,7 @@ import Map from './../map/map.jsx';
 import PlacesFound from './../places-found/places-found.jsx';
 import Sort from './../sort/sort.jsx';
 
-const CitiesPlaces = ({city, properties, sortOptions, sortActiveOption, sortOpened, onSortArrowClick, onSortOptionClick,
-  onClick, onPlaceCardMouseEnter, onPlaceCardMouseLeave, onAddToFavorite}) => {
+const CitiesPlaces = ({city, properties, sortOptions, sortActiveOption, sortOpened, onSortArrowClick, onSortOptionClick}) => {
   return <div className="cities__places-container container">
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
@@ -15,14 +14,10 @@ const CitiesPlaces = ({city, properties, sortOptions, sortActiveOption, sortOpen
         opened={sortOpened} properties={properties}
         onArrowClick={onSortArrowClick}
         onOptionClick={onSortOptionClick}/>
-      <PlacesList key="PlacesList" properties={properties} onClick={onClick}
-        onPlaceCardMouseEnter={onPlaceCardMouseEnter}
-        onPlaceCardMouseLeave={onPlaceCardMouseLeave}
-        onAddToFavorite={onAddToFavorite}
-      />
+      <PlacesList forCity={true} key="PlacesList" properties={properties} />
     </section>
     <div className="cities__right-section">
-      {properties.length <= 0 ? null : <Map properties={properties}/>}
+      {properties.length <= 0 ? null : <Map mapClass="cities__map" properties={properties}/>}
     </div>
   </div>;
 };
@@ -37,9 +32,6 @@ CitiesPlaces.propTypes = {
   sortOpened: PropTypes.bool.isRequired,
   onSortArrowClick: PropTypes.func.isRequired,
   onSortOptionClick: PropTypes.func.isRequired,
-  onPlaceCardMouseEnter: PropTypes.func.isRequired,
-  onPlaceCardMouseLeave: PropTypes.func.isRequired,
-  onAddToFavorite: PropTypes.func.isRequired,
 };
 
 export default CitiesPlaces;

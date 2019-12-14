@@ -7,6 +7,8 @@ class PlaceCard extends PureComponent {
   constructor(props) {
     super(props);
 
+    this._cardClass = this.props.forCity ? `cities__place-card` : `near-places__card`;
+    this._wrapperClass = this.props.forCity ? `cities__image-wrapper` : `near-places__image-wrapper`;
     this._mouseEnterHandler = this.mouseEnterHandler.bind(this);
     this._mouseLeaveHandler = this.mouseLeaveHandler.bind(this);
     this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
@@ -28,7 +30,7 @@ class PlaceCard extends PureComponent {
     const bookmarkClass = `place-card__bookmark-button button` + (this.props.data.isFavorite ? ` place-card__bookmark-button--active` : ``);
     const ratingWidth = convertRatingToPercent(this.props.data.rating);
 
-    return <article className="cities__place-card place-card" id={this.props.data.id}
+    return <article className={`${this._cardClass} place-card`} id={this.props.data.id}
       onMouseEnter={this._mouseEnterHandler} onMouseLeave={this._mouseLeaveHandler}>
       {
         this.props.data.isPremium ?
@@ -39,7 +41,7 @@ class PlaceCard extends PureComponent {
           null
       }
 
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${this._wrapperClass} place-card__image-wrapper`}>
         <Link to={`/offer/${this.props.data.id}`}>
           <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
         </Link>
@@ -73,6 +75,7 @@ class PlaceCard extends PureComponent {
 }
 
 PlaceCard.propTypes = {
+  forCity: PropTypes.bool.isRequired,
   data: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,

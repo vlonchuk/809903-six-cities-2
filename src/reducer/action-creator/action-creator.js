@@ -7,6 +7,7 @@ import {
   REQUIRED_AUTHORIZATION,
   SAVE_USER,
   REMOVE_USER,
+  LOAD_COMMENTS,
 } from './../action-type/action-type.js';
 
 const ActionCreator = {
@@ -63,7 +64,14 @@ const ActionCreator = {
       type: ACTIVATE_CARD,
       payload: card
     };
-  }
+  },
+
+  loadComments: (comments) => {
+    return {
+      type: LOAD_COMMENTS,
+      payload: comments
+    };
+  },
 };
 
 export default ActionCreator;

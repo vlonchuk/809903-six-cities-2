@@ -29,16 +29,29 @@ const getPropertyById = (offers, id) => {
   return properties.length > 0 ? properties[0] : null;
 };
 
+const convertRawUserData = (data) => {
+  return Object.assign({}, data, {
+    avatarUrl: data[`avatar_url`],
+    isPro: data[`is_pro`],
+  });
+};
+
 const convertRawOffersData = (data) => {
   data.forEach((el, i) => {
     data[i] = Object.assign({}, el, {
       previewImage: el[`preview_image`],
       isFavorite: el[`is_favorite`],
       isPremium: el[`is_premium`],
-      host: Object.assign({}, el.host, {
-        isPro: el.host[`is_pro`],
-        avatarUrl: el.host[`avatar_url`],
-      }),
+      host: convertRawUserData(el.host),
+    });
+  });
+  return data;
+};
+
+const convertRawCommentData = (data) => {
+  data.forEach((el, i) => {
+    data[i] = Object.assign({}, el, {
+      user: convertRawUserData(el.user),
     });
   });
   return data;
@@ -48,11 +61,31 @@ const convertRatingToPercent = (rating) => {
   return (rating * 100) / MAX_RATING;
 };
 
-const convertRawUserData = (data) => {
-  return Object.assign({}, data, {
-    avatarUrl: data[`avatar_url`],
-    isPro: data[`is_pro`],
-  });
+const getYearMonth = (date) => {
+  const dt = new Date(date);
+  const month = dt.toLocaleDateString(`en`, {month: `short`});
+  const year = dt.getFullYear();
+  return `${month} ${year}`;
+};
+
+const getFullDate = (date) => {
+  const dt = new Date(date);
+  const year = dt.getFullYear();
+  const month = `${(`00` + (dt.getMonth() + 1)).slice(-2)}`;
+  const day = `${(`00` + dt.getDate()).slice(-2)}`;
+  return `${year}-${month}-${day}`;
+};
+
+const getDistance = (coor1, coor2) => {
+  const side1 = Math.abs(coor1.latitude - coor2.latitude);
+  const side2 = Math.abs(coor1.longitude - coor2.longitude);
+  return Math.sqrt(side1 * side1 + side2 * side2);
+};
+
+const getNearbyPlaces = (properties, current, top) => {
+  const sorted = properties.slice().sort((p1, p2) =>
+    getDistance(p1.location, current.location) - getDistance(p2.location, current.location));
+  return sorted.slice(0, top);
 };
 
 export {
@@ -63,4 +96,8 @@ export {
   convertRawUserData,
   getPropertyById,
   convertRatingToPercent,
+  getYearMonth,
+  getFullDate,
+  convertRawCommentData,
+  getNearbyPlaces,
 };

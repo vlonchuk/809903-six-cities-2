@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import CitiesList from './../cities-list/cities-list.jsx';
 import {connect} from "react-redux";
 import ActionCreator from './../../reducer/action-creator/action-creator.js';
+import Operation from './../../reducer/operation/operation.js';
 import CitiesPlaces from '../cities-places/cities-places.jsx';
 import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
-import Operation from './../../reducer/operation/operation.js';
 import PageHeader from './../page-header/page-header.jsx';
 import {
   getPropertiesByCity,
@@ -28,10 +28,6 @@ class Main extends PureComponent {
       sortOpened,
       onSortArrowClick,
       onSortOptionClick,
-      onClick,
-      onPlaceCardMouseEnter,
-      onPlaceCardMouseLeave,
-      onAddToFavorite,
       user
     } = this.props;
     const properties = this.props.getCityProperties(city, sortActiveOption, offers);
@@ -57,11 +53,7 @@ class Main extends PureComponent {
               sortActiveOption={sortActiveOption}
               sortOpened={sortOpened}
               onSortArrowClick={onSortArrowClick}
-              onSortOptionClick={onSortOptionClick}
-              onClick={onClick}
-              onPlaceCardMouseEnter={onPlaceCardMouseEnter}
-              onPlaceCardMouseLeave={onPlaceCardMouseLeave}
-              onAddToFavorite={onAddToFavorite} />
+              onSortOptionClick={onSortOptionClick} />
           }
         </div>
       </main>
@@ -74,6 +66,8 @@ class Main extends PureComponent {
       const city = cities[getRand(cities.length)];
       this.props.onCityClick(city);
     }
+
+    window.offers = this.props.offers;
   }
 }
 
@@ -112,15 +106,11 @@ Main.propTypes = {
   city: PropTypes.string.isRequired,
   getCityProperties: PropTypes.func,
   onCityClick: PropTypes.func,
-  onClick: PropTypes.func,
   sortOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortActiveOption: PropTypes.string.isRequired,
   sortOpened: PropTypes.bool.isRequired,
   onSortArrowClick: PropTypes.func.isRequired,
   onSortOptionClick: PropTypes.func.isRequired,
-  onPlaceCardMouseEnter: PropTypes.func.isRequired,
-  onPlaceCardMouseLeave: PropTypes.func.isRequired,
-  onAddToFavorite: PropTypes.func.isRequired,
   onLogin: PropTypes.func.isRequired,
   activeCard: PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -175,20 +165,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(ActionCreator.sortActiveOptionChange(option));
   },
 
-  onPlaceCardMouseEnter: (card) => {
-    dispatch(ActionCreator.activateCard(card));
-  },
-
-  onPlaceCardMouseLeave: () => {
-    dispatch(ActionCreator.activateCard(null));
-  },
-
   onLogin: (email, password) => {
     dispatch(Operation.login(email, password));
-  },
-
-  onAddToFavorite: (hotelId, status) => {
-    dispatch(Operation.addToFavorite(hotelId, status));
   },
 });
 

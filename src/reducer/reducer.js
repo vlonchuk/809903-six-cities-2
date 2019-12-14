@@ -8,6 +8,7 @@ import {
   REQUIRED_AUTHORIZATION,
   SAVE_USER,
   REMOVE_USER,
+  LOAD_COMMENTS,
 } from './action-type/action-type.js';
 
 function reducer(state = initialState, action) {
@@ -28,6 +29,8 @@ function reducer(state = initialState, action) {
       return Object.assign({}, state, {user: action.payload});
     case REMOVE_USER:
       return Object.assign({}, state, {user: null});
+    case LOAD_COMMENTS:
+      return Object.assign({}, state, {comments: action.payload});
     default:
       return state;
   }
