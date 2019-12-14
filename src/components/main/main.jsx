@@ -8,7 +8,6 @@ import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
 import Operation from './../../reducer/operation/operation.js';
 import PageHeader from './../page-header/page-header.jsx';
-import Property from './../property/property.jsx';
 import {
   getPropertiesByCity,
   sortPropertiesByOption
@@ -16,20 +15,10 @@ import {
 
 class Main extends PureComponent {
   render() {
-    //return this.renderMainPage();
-    return this.renderProperty();
-  }
-
-  renderProperty() {
-    if (this.props.offers && this.props.offers.length > 0) {
-//      return <Property id={1} user={this.props.user} offers={this.props.offers}/>;
-      return <Property id={1}/>;
-    }
-    return null;
+    return this.renderMainPage();
   }
 
   renderMainPage() {
-    console.log(`renderMainPage`);
     const {
       offers,
       city,
@@ -79,10 +68,6 @@ class Main extends PureComponent {
     </div>;
   }
 
-  componentDidMount() {
-    this.props.loadOffers();
-  }
-
   componentDidUpdate() {
     if (this.props.city === ``) {
       const cities = [...new Set(this.props.offers.map((el) => el.city.name))];
@@ -125,7 +110,6 @@ Main.propTypes = {
     }),
   })).isRequired,
   city: PropTypes.string.isRequired,
-  loadOffers: PropTypes.func,
   getCityProperties: PropTypes.func,
   onCityClick: PropTypes.func,
   onClick: PropTypes.func,
@@ -174,8 +158,6 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadOffers: () => dispatch(Operation.loadOffers()),
-
   getCityProperties: (city, sortOption, offers) => {
     return sortPropertiesByOption(sortOption, getPropertiesByCity(city, offers));
   },

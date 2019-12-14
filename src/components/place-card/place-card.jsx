@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
+import {convertRatingToPercent} from './../../utils.js';
 
 class PlaceCard extends PureComponent {
   constructor(props) {
@@ -25,6 +26,8 @@ class PlaceCard extends PureComponent {
 
   render() {
     const bookmarkClass = `place-card__bookmark-button button` + (this.props.data.isFavorite ? ` place-card__bookmark-button--active` : ``);
+    const ratingWidth = convertRatingToPercent(this.props.data.rating);
+
     return <article className="cities__place-card place-card" id={this.props.data.id}
       onMouseEnter={this._mouseEnterHandler} onMouseLeave={this._mouseLeaveHandler}>
       {
@@ -37,7 +40,9 @@ class PlaceCard extends PureComponent {
       }
 
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
+        <Link to={`/offer/${this.props.data.id}`}>
+          <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -54,7 +59,7 @@ class PlaceCard extends PureComponent {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: this.props.data.rating + `%`}}></span>
+            <span style={{width: ratingWidth + `%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

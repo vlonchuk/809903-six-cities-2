@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import PageHeader from './../page-header/page-header.jsx';
+import Operation from './../../reducer/operation/operation.js';
 import {
   getPropertyById,
   convertRatingToPercent
@@ -11,6 +12,11 @@ import {MAX_IMAGE_COUNT} from './../../consts/index.js';
 class Property extends PureComponent {
   constructor(props) {
     super(props);
+    this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
+  }
+
+  addToFavoriteHandler() {
+    this.props.onAddToFavorite(this.props.property.id, this.props.property.isFavorite ? 0 : 1);
   }
 
   render() {
@@ -52,7 +58,7 @@ class Property extends PureComponent {
             <h1 className="property__name">
               {property.title}
             </h1>
-            <button className={bookmarkClass} type="button">
+            <button className={bookmarkClass} type="button" onClick={this._addToFavoriteHandler}>
               <svg className="property__bookmark-icon" width="31" height="33">
                 <use xlinkHref="#icon-bookmark"></use>
               </svg>
@@ -102,12 +108,12 @@ class Property extends PureComponent {
 
   renderHost() {
     const {property} = this.props;
-    const avatarClass = `property__avatar-wrapper user__avatar-wrapper` + (property.host.isPro ? `property__avatar-wrapper--pro` : ``);
+    const avatarClass = `property__avatar-wrapper user__avatar-wrapper` + (property.host.isPro ? ` property__avatar-wrapper--pro` : ``);
     return <div className="property__host">
       <h2 className="property__host-title">Meet the host</h2>
       <div className="property__host-user user">
         <div className={avatarClass}>
-          <img className="property__avatar user__avatar" src={`./` + property.host.avatarUrl} width="74" height="74" alt="Host avatar"></img>
+          <img className="property__avatar user__avatar" src={`/` + property.host.avatarUrl} width="74" height="74" alt="Host avatar"></img>
         </div>
         <span className="property__user-name">
           {property.host.name}
@@ -132,15 +138,24 @@ class Property extends PureComponent {
 Property.propTypes = {
   id: PropTypes.number.isRequired,
   user: PropTypes.object,
-  offers: PropTypes.array.isRequired,
   property: PropTypes.object,
+  onAddToFavorite: PropTypes.func,
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  offers: state.offers,
-  user: state.user,
-  property: getPropertyById(state.offers, ownProps.id),
+const mapStateToProps = (state, ownProps) => {
+  const id = Number.parseInt(ownProps.match.params.id, 10);
+  return Object.assign({}, ownProps, {
+    id,
+    user: state.user,
+    property: getPropertyById(state.offers, id),
+  });
+};
+
+const mapDispathToProps = (dispatch) => ({
+  onAddToFavorite: (hotelId, status) => {
+    dispatch(Operation.addToFavorite(hotelId, status));
+  },
 });
 
-const PropertyWrapped = connect(mapStateToProps)(Property);
+const PropertyWrapped = connect(mapStateToProps, mapDispathToProps)(Property);
 export default PropertyWrapped;

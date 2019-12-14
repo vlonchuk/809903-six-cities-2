@@ -31,12 +31,14 @@ const getPropertyById = (offers, id) => {
 
 const convertRawOffersData = (data) => {
   data.forEach((el, i) => {
-//    const prcntRating = (Math.round(el.rating) * 100) / MAX_RATING;
     data[i] = Object.assign({}, el, {
       previewImage: el[`preview_image`],
       isFavorite: el[`is_favorite`],
       isPremium: el[`is_premium`],
-//      rating: prcntRating,
+      host: Object.assign({}, el.host, {
+        isPro: el.host[`is_pro`],
+        avatarUrl: el.host[`avatar_url`],
+      }),
     });
   });
   return data;
