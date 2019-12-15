@@ -70,6 +70,18 @@ const Operation = {
           }
         });
     };
+  },
+
+  addComment: (hotelId, rating, comment) => {
+    return (dispatch, _, api) => {
+      return api
+        .post(`/comments/${hotelId}`, {rating, comment})
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch(Operation.loadComments(hotelId));
+          }
+        });
+    };
   }
 };
 

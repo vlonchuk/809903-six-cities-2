@@ -62,15 +62,17 @@ class Property extends PureComponent {
     const bookmarkClass = `property__bookmark-button button` + (property.isFavorite ? ` property__bookmark-button--active` : ``);
     const ratingWidth = convertRatingToPercent(property.rating);
 
-    return <div className="property__gallery-container container">
-      <div className="property__gallery">
-        {
-          property.images.slice(0, MAX_IMAGE_COUNT).map((el, i) =>
-            <div className="property__image-wrapper" key={i}>
-              <img className="property__image" src={el} alt="Photo studio"></img>
-            </div>
-          )
-        }
+    return <React.Fragment>
+      <div className="property__gallery-container container">
+        <div className="property__gallery">
+          {
+            property.images.slice(0, MAX_IMAGE_COUNT).map((el, i) =>
+              <div className="property__image-wrapper" key={i}>
+                <img className="property__image" src={el} alt="Photo studio"></img>
+              </div>
+            )
+          }
+        </div>
       </div>
       <div className="property__container container">
         <div className="property__wrapper">
@@ -131,7 +133,7 @@ class Property extends PureComponent {
           {this.renderComments()}
         </div>
       </div>
-    </div>;
+    </React.Fragment>;
   }
 
   renderHost() {
@@ -162,7 +164,7 @@ class Property extends PureComponent {
   }
 
   renderComments() {
-    return <ReviewList comments={this.props.comments} />;
+    return <ReviewList hotelId={this.props.id}/>;
   }
 }
 
@@ -172,7 +174,6 @@ Property.propTypes = {
   property: PropTypes.object,
   properties: PropTypes.array.isRequired,
   mapProperties: PropTypes.array.isRequired,
-  comments: PropTypes.array.isRequired,
   onAddToFavorite: PropTypes.func,
 };
 
@@ -184,7 +185,6 @@ const getNearbyProperties = (property, offers) => {
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   user: state.user,
-  comments: state.comments,
 });
 
 const mapDispathToProps = (dispatch) => ({

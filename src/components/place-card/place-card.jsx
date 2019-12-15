@@ -42,7 +42,9 @@ class PlaceCard extends PureComponent {
       }
 
       <div className={`${this._wrapperClass} place-card__image-wrapper`}>
-        <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
+        <Link to={`/offer/${this.props.data.id}`}>
+          <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
