@@ -9,6 +9,8 @@ class PlacesList extends PureComponent {
   constructor(props) {
     super(props);
     this._placesClass = this.props.forCity ? `cities__places-list tabs__content` : `near-places__list`;
+    this._placeCardMouseEnterHandler = this.props.onPlaceCardMouseEnter || this.props.onPlaceCardMouseEnterDefault;
+    this._placeCardMouseLeaveHandler = this.props.onPlaceCardMouseLeave || this.props.onPlaceCardMouseLeaveDefault;
   }
 
   render() {
@@ -20,8 +22,8 @@ class PlacesList extends PureComponent {
   get properties() {
     return this.props.properties.map((item) => (
       <PlaceCard forCity={this.props.forCity} key={item.id} data={item} onClick={this.props.onClick}
-        onMouseEnter={this.props.onPlaceCardMouseEnter}
-        onMouseLeave={this.props.onPlaceCardMouseLeave}
+        onMouseEnter={this._placeCardMouseEnterHandler}
+        onMouseLeave={this._placeCardMouseLeaveHandler}
         onAddToFavorite={this.props.onAddToFavorite}
       />
     ));
@@ -54,17 +56,21 @@ PlacesList.propTypes = {
     }),
   })).isRequired,
   onClick: PropTypes.func,
-  onPlaceCardMouseEnter: PropTypes.func.isRequired,
-  onPlaceCardMouseLeave: PropTypes.func.isRequired,
+  onPlaceCardMouseEnterDefault: PropTypes.func.isRequired,
+  onPlaceCardMouseLeaveDefault: PropTypes.func.isRequired,
+  onPlaceCardMouseEnter: PropTypes.func,
+  onPlaceCardMouseLeave: PropTypes.func,
   onAddToFavorite: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {});
+
 const mapDispatchToProps = (dispatch) => ({
-  onPlaceCardMouseEnter: (card) => {
+  onPlaceCardMouseEnterDefault: (card) => {
     dispatch(ActionCreator.activateCard(card));
   },
 
-  onPlaceCardMouseLeave: () => {
+  onPlaceCardMouseLeaveDefault: () => {
     dispatch(ActionCreator.activateCard(null));
   },
 
@@ -73,7 +79,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const PlacesListWrapped = connect(null, mapDispatchToProps)(PlacesList);
+const PlacesListWrapped = connect(mapStateToProps, mapDispatchToProps)(PlacesList);
 
 export {PlacesList};
 export default PlacesListWrapped;

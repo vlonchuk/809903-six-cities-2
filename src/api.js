@@ -1,11 +1,22 @@
 import axios from 'axios';
 import ActionCreator from './reducer/action-creator/action-creator.js';
 import history from './history.js';
+import {
+  API_URL,
+  ApiMethods,
+  Routes,
+  TIMEOUT,
+} from './consts/api.js';
+
+const isCheckLogin = (method, url) => {
+  return method.toLowerCase() === ApiMethods.CHECK_LOGIN.method &&
+    url.toLowerCase() === (API_URL + ApiMethods.CHECK_LOGIN.url);
+};
 
 const configureAPI = (dispatch) => {
   const api = axios.create({
-    baseURL: `https://htmlacademy-react-2.appspot.com/six-cities`,
-    timeout: 5000,
+    baseURL: API_URL,
+    timeout: TIMEOUT,
     withCredentials: true
   });
 
@@ -16,20 +27,16 @@ const configureAPI = (dispatch) => {
 
   const onFail = (err) => {
     console.log(err);
-    if (err.response.status === 401) {
+    if (err.response.status === 401 && !isCheckLogin(err.config.method, err.config.url)) {
+      console.log(err);
       dispatch(ActionCreator.requireAuthorization(true));
       dispatch(ActionCreator.removeUser());
-      history.push(`/login`);
+      history.push(Routes.LOGIN);
     } else {
-      history.push(`/`);
+      history.push(Routes.MAIN);
     }
 
     return err;
-  };
-
-  const onRequestSuccess = (config) => {
-    console.log(config);
-    return config;
   };
 
   api.interceptors.request.use(onSuccess);

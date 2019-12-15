@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import PageHeader from './../page-header/page-header.jsx';
+import ActionCreator from './../../reducer/action-creator/action-creator.js';
 import Operation from './../../reducer/operation/operation.js';
 import {
   getPropertyById,
@@ -21,11 +22,12 @@ class Property extends PureComponent {
   constructor(props) {
     super(props);
     this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
+    this._placeCardMouseLeaveHandler = this.placeCardMouseLeaveHandler.bind(this);
+    this._placeCardMouseEnterHandler = this.placeCardMouseEnterHandler.bind(this);
   }
 
-  componentDidMount() {
-    this.props.loadComments(this.props.property.id);
-  }
+  placeCardMouseEnterHandler() {}
+  placeCardMouseLeaveHandler() {}
 
   addToFavoriteHandler() {
     this.props.onAddToFavorite(this.props.property.id, this.props.property.isFavorite ? 0 : 1);
@@ -37,7 +39,7 @@ class Property extends PureComponent {
       <main className="page__main page__main--property">
         <section className="property">
           {this.renderProperty()}
-          <Map mapClass="property__map" properties={this.props.properties}/>
+          <Map mapClass="property__map" properties={this.props.mapProperties}/>
           {this.renderNearbyProperties()}
         </section>
       </main>
@@ -48,7 +50,9 @@ class Property extends PureComponent {
     return <div className="container">
       <section className="near-places places">
         <h2 className="near-places__title">Other places in the neighbourhood</h2>
-        <PlacesList forCity={false} key="PlacesList" properties={this.props.properties} />
+        <PlacesList forCity={false} key="PlacesList" properties={this.props.properties}
+          onPlaceCardMouseLeave={this._placeCardMouseLeaveHandler}
+          onPlaceCardMouseEnter={this._placeCardMouseEnterHandler} />
       </section>
     </div>;
   }
@@ -167,9 +171,9 @@ Property.propTypes = {
   user: PropTypes.object,
   property: PropTypes.object,
   properties: PropTypes.array.isRequired,
+  mapProperties: PropTypes.array.isRequired,
   comments: PropTypes.array.isRequired,
   onAddToFavorite: PropTypes.func,
-  loadComments: PropTypes.func,
 };
 
 const getNearbyProperties = (property, offers) => {
@@ -178,28 +182,35 @@ const getNearbyProperties = (property, offers) => {
   return getNearbyPlaces(exceptCurrent, property, MAX_NEARBY_PLACES);
 };
 
-const mapStateToProps = (state, ownProps) => {
-  const id = Number.parseInt(ownProps.match.params.id, 10);
-  const property = getPropertyById(state.offers, id);
-
-  return Object.assign({}, ownProps, {
-    id,
-    user: state.user,
-    property,
-    comments: state.comments,
-    properties: getNearbyProperties(property, state.offers),
-  });
-};
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  user: state.user,
+  comments: state.comments,
+});
 
 const mapDispathToProps = (dispatch) => ({
   onAddToFavorite: (hotelId, status) => {
     dispatch(Operation.addToFavorite(hotelId, status));
   },
-
-  loadComments: async (hotelId) => {
-    await dispatch(Operation.loadComments(hotelId));
-  }
 });
+
+Property.getLinkProps = (offers, ownProps) => {
+  const id = Number.parseInt(ownProps.match.params.id, 10);
+  const property = getPropertyById(offers, id);
+  const properties = getNearbyProperties(property, offers);
+  const mapProperties = [property].concat(properties);
+
+  return {
+    id,
+    property,
+    properties,
+    mapProperties,
+  };
+};
+
+Property.loadParams = async (dispatch, hotelId, property) => {
+  dispatch(ActionCreator.activateCard(property));
+  await dispatch(Operation.loadComments(hotelId));
+};
 
 const PropertyWrapped = connect(mapStateToProps, mapDispathToProps)(Property);
 export default PropertyWrapped;

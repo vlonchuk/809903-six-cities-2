@@ -20,12 +20,13 @@ const init = () => {
           window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f)
   );
 
+  store.dispatch(Operation.checkLogin());
   store.dispatch(Operation.loadOffers());
 
   ReactDOM.render(
       <Provider store={store}>
         <Router history={history}>
-          <App />
+          <App store={store}/>
         </Router>
       </Provider>,
       document.querySelector(`#root`)

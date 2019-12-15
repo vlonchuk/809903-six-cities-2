@@ -5,14 +5,20 @@ import {
   convertRawCommentData,
 } from './../../utils.js';
 
+const loadUser = (dispatch, data) => {
+  const user = convertRawUserData(data);
+  dispatch(ActionCreator.requireAuthorization(false));
+  dispatch(ActionCreator.saveUser(user));
+};
+
 const Operation = {
   checkLogin: () => {
     return (dispatch, _, api) => {
       return api
         .get(`/login`)
-        .then((res) => {
-          if (res.status === 200) {
-            dispatch(ActionCreator.requireAuthorization(false));
+        .then((response) => {
+          if (response.status === 200) {
+            loadUser(dispatch, response.data);
           }
         });
     };
@@ -24,9 +30,7 @@ const Operation = {
         .post(`/login`, {email, password})
         .then((response) => {
           if (response.status === 200) {
-            const user = convertRawUserData(response.data);
-            dispatch(ActionCreator.requireAuthorization(false));
-            dispatch(ActionCreator.saveUser(user));
+            loadUser(dispatch, response.data);
           }
         });
     };
@@ -66,7 +70,7 @@ const Operation = {
           }
         });
     };
-  },
+  }
 };
 
 export default Operation;

@@ -42,9 +42,7 @@ class PlaceCard extends PureComponent {
       }
 
       <div className={`${this._wrapperClass} place-card__image-wrapper`}>
-        <Link to={`/offer/${this.props.data.id}`}>
-          <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
-        </Link>
+        <img className="place-card__image" src={this.props.data.previewImage} width="260" height="200" alt="Place image"></img>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -65,9 +63,11 @@ class PlaceCard extends PureComponent {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
-          <a href="#" onClick={this.props.onClick}>{this.props.data.title}</a>
-        </h2>
+        <Link to={`/offer/${this.props.data.id}`}>
+          <h2 className="place-card__name">
+            {this.props.data.title}
+          </h2>
+        </Link>
         <p className="place-card__type">{this.props.data.type}</p>
       </div>
     </article>;
@@ -87,7 +87,6 @@ PlaceCard.propTypes = {
     rating: PropTypes.number.isRequired,
   }),
   onAddToFavorite: PropTypes.func.isRequired,
-  onClick: PropTypes.func,
   onMouseEnter: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,
 };

@@ -61,13 +61,11 @@ class Main extends PureComponent {
   }
 
   componentDidUpdate() {
-    if (this.props.city === ``) {
+    if (this.props.city === `` && this.props.offers.length > 0) {
       const cities = [...new Set(this.props.offers.map((el) => el.city.name))];
       const city = cities[getRand(cities.length)];
       this.props.onCityClick(city);
     }
-
-    window.offers = this.props.offers;
   }
 }
 
