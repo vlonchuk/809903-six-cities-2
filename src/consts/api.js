@@ -10,7 +10,8 @@ const ApiMethods = {
 const Routes = {
   MAIN: `/`,
   LOGIN: `/login`,
-}
+  FAVORITES: `/favorites`,
+};
 
 const TIMEOUT = 5000;
 

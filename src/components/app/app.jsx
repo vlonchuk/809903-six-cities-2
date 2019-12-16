@@ -5,6 +5,7 @@ import {Switch, Route} from 'react-router-dom';
 import Main from './../main/main.jsx';
 import Login from './../login/login.jsx';
 import Property from './../property/property.jsx';
+import Favorites from './../favorites/favorites.jsx';
 
 const App = (props) => {
   return <section>
@@ -16,6 +17,7 @@ const App = (props) => {
         props.loadPropertyParams(newProps.id, newProps.property);
         return <Property {...newProps} />;
       }} />
+      <Route path="/favorites" exact component={Favorites} />
     </Switch>
   </section>;
 };
