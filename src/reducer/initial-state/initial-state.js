@@ -16,6 +16,7 @@ const initialState = {
   isAuthorizationRequired: true,
   user: null,
   comments: [],
+  favorites: [],
 };
 
 export default initialState;

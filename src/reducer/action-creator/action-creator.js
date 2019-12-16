@@ -8,6 +8,7 @@ import {
   SAVE_USER,
   REMOVE_USER,
   LOAD_COMMENTS,
+  LOAD_FAVORITES,
 } from './../action-type/action-type.js';
 
 const ActionCreator = {
@@ -70,6 +71,13 @@ const ActionCreator = {
     return {
       type: LOAD_COMMENTS,
       payload: comments
+    };
+  },
+
+  loadFavorites: (favorites) => {
+    return {
+      type: LOAD_FAVORITES,
+      payload: favorites
     };
   },
 };

@@ -82,7 +82,20 @@ const Operation = {
           }
         });
     };
-  }
+  },
+
+  loadFavorites: () => {
+    return (dispatch, _, api) => {
+      return api
+        .get(`/favorite`)
+        .then((response) => {
+          if (response.status === 200) {
+            let data = convertRawOffersData(response.data);
+            dispatch(ActionCreator.loadFavorites(data));
+          }
+        });
+    };
+  },
 };
 
 export default Operation;

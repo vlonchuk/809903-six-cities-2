@@ -9,6 +9,7 @@ import {
   SAVE_USER,
   REMOVE_USER,
   LOAD_COMMENTS,
+  LOAD_FAVORITES,
 } from './action-type/action-type.js';
 import initialState from './initial-state/initial-state.js';
 import offers from './../mocks/offers.js';
@@ -97,5 +98,12 @@ describe(`Reducer works correctly`, () => {
       type: LOAD_COMMENTS,
       payload: comments
     })).toEqual(Object.assign({}, initialState, {comments}));
+  });
+
+  it(`Reducer correctly loads favorites`, () => {
+    expect(reducer(initialState, {
+      type: LOAD_FAVORITES,
+      payload: offers
+    })).toEqual(Object.assign({}, initialState, {favorites: offers}));
   });
 });

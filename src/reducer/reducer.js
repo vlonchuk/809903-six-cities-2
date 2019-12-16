@@ -9,6 +9,7 @@ import {
   SAVE_USER,
   REMOVE_USER,
   LOAD_COMMENTS,
+  LOAD_FAVORITES,
 } from './action-type/action-type.js';
 
 function reducer(state = initialState, action) {
@@ -31,6 +32,8 @@ function reducer(state = initialState, action) {
       return Object.assign({}, state, {user: null});
     case LOAD_COMMENTS:
       return Object.assign({}, state, {comments: action.payload});
+    case LOAD_FAVORITES:
+      return Object.assign({}, state, {favorites: action.payload});
     default:
       return state;
   }
