@@ -60,12 +60,20 @@ class Main extends PureComponent {
     </div>;
   }
 
-  componentDidUpdate() {
+  selectRandomCity() {
     if (this.props.city === `` && this.props.offers.length > 0) {
       const cities = [...new Set(this.props.offers.map((el) => el.city.name))];
       const city = cities[getRand(cities.length)];
       this.props.onCityClick(city);
     }
+  }
+
+  componentDidMount() {
+    this.selectRandomCity();
+  }
+
+  componentDidUpdate() {
+    this.selectRandomCity();
   }
 }
 
