@@ -17,7 +17,6 @@ class Favorites extends PureComponent {
   }
 
   render() {
-    //console.log(this.props.properties);
     this._cities = this.props.properties.reduce((acc, curr) => {
       if (!acc.has(curr.city.name)) {
         acc.set(curr.city.name, [curr]);
