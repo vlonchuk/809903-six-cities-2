@@ -1,29 +1,39 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import ActionCreator from './../../reducer/action-creator/action-creator.js';
 import Operation from './../../reducer/operation/operation.js';
 import PlaceCard from './../place-card/place-card.jsx';
+import PlacesListType from './../../consts/places-list-type.js';
 
 class PlacesList extends PureComponent {
   constructor(props) {
     super(props);
-    this._placesClass = this.props.forCity ? `cities__places-list tabs__content` : `near-places__list`;
-    this._placeCardMouseEnterHandler = this.props.onPlaceCardMouseEnter || this.props.onPlaceCardMouseEnterDefault;
-    this._placeCardMouseLeaveHandler = this.props.onPlaceCardMouseLeave || this.props.onPlaceCardMouseLeaveDefault;
+    switch (this.props.listType) {
+      case PlacesListType.CITY:
+        this._placesClass = `cities__places-list tabs__content places__list`;
+        break;
+      case PlacesListType.NEAR:
+        this._placesClass = `near-places__list`;
+        break;
+      case PlacesListType.FAVORITES:
+        this._placesClass = `favorites__places`;
+        break;
+      default:
+        this._placesClass = ``;
+    }
   }
 
   render() {
-    return <div className={`${this._placesClass} places__list`}>
+    return <div className={`${this._placesClass}`}>
       {this.properties}
     </div>;
   }
 
   get properties() {
     return this.props.properties.map((item) => (
-      <PlaceCard forCity={this.props.forCity} key={item.id} data={item} onClick={this.props.onClick}
-        onMouseEnter={this._placeCardMouseEnterHandler}
-        onMouseLeave={this._placeCardMouseLeaveHandler}
+      <PlaceCard listType={this.props.listType} key={item.id} data={item} onClick={this.props.onClick}
+        onMouseEnter={this.props.onPlaceCardMouseEnter}
+        onMouseLeave={this.props.onPlaceCardMouseLeave}
         onAddToFavorite={this.props.onAddToFavorite}
       />
     ));
@@ -31,7 +41,7 @@ class PlacesList extends PureComponent {
 }
 
 PlacesList.propTypes = {
-  forCity: PropTypes.bool.isRequired,
+  listType: PropTypes.oneOf(PlacesListType).isRequired,
   properties: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     city: PropTypes.shape({
@@ -56,24 +66,14 @@ PlacesList.propTypes = {
     }),
   })).isRequired,
   onClick: PropTypes.func,
-  onPlaceCardMouseEnterDefault: PropTypes.func.isRequired,
-  onPlaceCardMouseLeaveDefault: PropTypes.func.isRequired,
   onPlaceCardMouseEnter: PropTypes.func,
   onPlaceCardMouseLeave: PropTypes.func,
   onAddToFavorite: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {});
+const mapStateToProps = (_, ownProps) => ownProps;
 
 const mapDispatchToProps = (dispatch) => ({
-  onPlaceCardMouseEnterDefault: (card) => {
-    dispatch(ActionCreator.activateCard(card));
-  },
-
-  onPlaceCardMouseLeaveDefault: () => {
-    dispatch(ActionCreator.activateCard(null));
-  },
-
   onAddToFavorite: (hotelId, status) => {
     dispatch(Operation.addToFavorite(hotelId, status));
   },

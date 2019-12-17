@@ -17,17 +17,13 @@ import {
 import ReviewList from './../review-list/review-list.jsx';
 import Map from './../map/map.jsx';
 import PlacesList from './../places-list/places-list.jsx';
+import PlacesListType from './../../consts/places-list-type.js';
 
 class Property extends PureComponent {
   constructor(props) {
     super(props);
     this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
-    this._placeCardMouseLeaveHandler = this.placeCardMouseLeaveHandler.bind(this);
-    this._placeCardMouseEnterHandler = this.placeCardMouseEnterHandler.bind(this);
   }
-
-  placeCardMouseEnterHandler() {}
-  placeCardMouseLeaveHandler() {}
 
   addToFavoriteHandler() {
     this.props.onAddToFavorite(this.props.property.id, this.props.property.isFavorite ? 0 : 1);
@@ -50,9 +46,7 @@ class Property extends PureComponent {
     return <div className="container">
       <section className="near-places places">
         <h2 className="near-places__title">Other places in the neighbourhood</h2>
-        <PlacesList forCity={false} key="PlacesList" properties={this.props.properties}
-          onPlaceCardMouseLeave={this._placeCardMouseLeaveHandler}
-          onPlaceCardMouseEnter={this._placeCardMouseEnterHandler} />
+        <PlacesList listType={PlacesListType.NEAR} key="PlacesList" properties={this.props.properties} />
       </section>
     </div>;
   }

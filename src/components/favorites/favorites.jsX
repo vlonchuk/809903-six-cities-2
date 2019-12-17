@@ -5,6 +5,7 @@ import Operation from './../../reducer/operation/operation.js';
 import PageHeader from './../page-header/page-header.jsx';
 import PlacesList from './../places-list/places-list.jsx';
 import {Link} from "react-router-dom";
+import PlacesListType from './../../consts/places-list-type.js';
 
 class Favorites extends PureComponent {
   constructor(props) {
@@ -16,6 +17,16 @@ class Favorites extends PureComponent {
   }
 
   render() {
+    this._cities = this.props.properties.reduce((acc, curr) => {
+      if (!acc.has(curr.city.name)) {
+        acc.set(curr.city.name, [curr]);
+      } else {
+        const arr = acc.get(curr.city.name);
+        arr.push(curr);
+      }
+      return acc;
+    }, new Map());
+
     return <div className="page">
       <PageHeader user={this.props.user} />
       <div className="page__favorites-container container">
@@ -30,7 +41,24 @@ class Favorites extends PureComponent {
   }
 
   renderFull() {
-    return <PlacesList forCity={true} key="PlacesList" properties={this.props.properties}/>;
+
+    return <section className="favorites">
+      <h1 className="favorites__title">Saved listing</h1>
+      <ul className="favorites__list">
+        {
+          Array.from(this._cities, ([key, value]) => <li className="favorites__locations-items" key={key}>
+            <div className="favorites__locations locations locations--current">
+              <div className="locations__item">
+                <a className="locations__item-link" href="#">
+                  <span>{key}</span>
+                </a>
+              </div>
+            </div>
+            <PlacesList listType={PlacesListType.FAVORITES} key="PlacesList" properties={value}/>
+          </li>)
+        }
+      </ul>
+    </section>;
   }
 
   renderEmpty() {
@@ -55,12 +83,16 @@ class Favorites extends PureComponent {
 Favorites.propTypes = {
   user: PropTypes.object,
   properties: PropTypes.array.isRequired,
+  loadFavorites: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  user: state.user,
-  properties: state.favorites,
-});
+const mapStateToProps = (state, ownProps) => {
+  window.offers = state.offers;
+  return Object.assign({}, ownProps, {
+    user: state.user,
+    properties: state.favorites,
+  });
+};
 
 const mapDispatchToProps = (dispatch) => ({
   loadFavorites: () => {
