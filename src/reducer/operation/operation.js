@@ -47,13 +47,26 @@ const Operation = {
     };
   },
 
-  addToFavorite: (hotelId, status) => {
+  toggleFavorite: (favorites, hotelId, status) => {
+    return (dispatch, _, _api) => {
+      let hotel = favorites.find((el) => el.id === hotelId);
+      if (hotel) {
+        hotel.isFavorite = (status === 1);
+        dispatch(ActionCreator.loadFavorites(favorites.slice()));
+      }
+    };
+  },
+
+  addToFavorite: (hotelId, status, favorites) => {
     return (dispatch, _, api) => {
       return api
         .post(`/favorite/${hotelId}/${status}`)
         .then((response) => {
           if (response.status === 200) {
             dispatch(Operation.loadOffers());
+            if (favorites) {
+              dispatch(Operation.toggleFavorite(favorites, hotelId, status));
+            }
           }
         });
     };

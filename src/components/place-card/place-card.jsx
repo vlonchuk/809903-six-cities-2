@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {convertRatingToPercent} from './../../utils.js';
 import PlacesListType from './../../consts/places-list-type.js';
@@ -54,7 +55,7 @@ class PlaceCard extends PureComponent {
   }
 
   addToFavoriteHandler() {
-    this.props.onAddToFavorite(this.props.data.id, this.props.data.isFavorite ? 0 : 1);
+    this.props.onAddToFavorite(this.props.data.id, this.props.data.isFavorite ? 0 : 1, this.props.favorites);
   }
 
   render() {
@@ -120,9 +121,15 @@ PlaceCard.propTypes = {
     isPremium: PropTypes.bool.isRequired,
     rating: PropTypes.number.isRequired,
   }),
+  favorites: PropTypes.array.isRequired,
   onAddToFavorite: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
 };
 
-export default PlaceCard;
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  favorites: state.favorites,
+});
+
+const PlaceCardWrapped = connect(mapStateToProps)(PlaceCard);
+export default PlaceCardWrapped;

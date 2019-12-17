@@ -74,8 +74,8 @@ PlacesList.propTypes = {
 const mapStateToProps = (_, ownProps) => ownProps;
 
 const mapDispatchToProps = (dispatch) => ({
-  onAddToFavorite: (hotelId, status) => {
-    dispatch(Operation.addToFavorite(hotelId, status));
+  onAddToFavorite: (hotelId, status, favorites) => {
+    dispatch(Operation.addToFavorite(hotelId, status, favorites));
   },
 });
 
