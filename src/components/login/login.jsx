@@ -1,9 +1,12 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {Redirect} from 'react-router-dom';
 import PageHeader from './../page-header/page-header.jsx';
 import {connect} from 'react-redux';
 import Operation from './../../reducer/operation/operation.js';
 import history from './../../history.js';
+//import {showError} from './../../utils.js';
+import notifier from './../../notifier.js';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -12,6 +15,15 @@ class Login extends PureComponent {
     this._mapEmail = React.createRef();
     this._mapPassword = React.createRef();
     this._onLogin = this.onLogin.bind(this);
+    this._onInputChangeHandler = this.onInputChangeHandler.bind(this);
+  }
+
+  onInputChangeHandler(evt) {
+    if (evt.target.validity.valid) {
+      evt.target.style = `background: #dfd`;
+    } else {
+      evt.target.style = `background: #fdd`;
+    }
   }
 
   async onLogin(evt) {
@@ -20,18 +32,31 @@ class Login extends PureComponent {
       return;
     }
 
+/*    if (!this._mapEmail.current.checkValidity() ||
+        !this._mapPassword.current.checkValidity()) {
+      return;
+    }*/
+
     const email = this._mapEmail.current.value.trim();
     const password = this._mapPassword.current.value.trim();
 
-    if (email === `` || password === ``) {
+    try {
+      await this.props.onLogin(email, password);
+      alert('2');
+    } catch (error) {
+      //showError(error);
+      alert(error);
+      notifier.error(error);
       return;
     }
-
-    await this.props.onLogin(email, password);
     history.push(`/`);
   }
 
   render() {
+    if (this.props.user) {
+      return <Redirect to="/"/>;
+    }
+
     return <div className="page page--gray page--login">
       <PageHeader user={this.props.user} />
       <main className="page__main page__main--login">
@@ -41,11 +66,13 @@ class Login extends PureComponent {
             <form className="login__form form" action="#" method="post">
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
-                <input className="login__input form__input" ref={this._mapEmail} type="email" name="email" placeholder="Email" required=""></input>
+                <input className="login__input form__input" ref={this._mapEmail} type="email" name="email" placeholder="Email" id="email-123" required
+                  onChange={this._onInputChangeHandler}></input>
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
-                <input className="login__input form__input" ref={this._mapPassword} type="password" name="password" placeholder="Password" required=""></input>
+                <input className="login__input form__input" ref={this._mapPassword} type="password" name="password" placeholder="Password" id="pwd-123" required
+                  onChange={this._onInputChangeHandler}></input>
               </div>
               <button className="login__submit form__submit button" type="submit" onClick={this._onLogin}>Sign in</button>
             </form>

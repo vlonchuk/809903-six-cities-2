@@ -110,7 +110,7 @@ class PlaceCard extends PureComponent {
 }
 
 PlaceCard.propTypes = {
-  listType: PropTypes.oneOf(PlacesListType).isRequired,
+  listType: PropTypes.oneOf(Object.values(PlacesListType)).isRequired,
   data: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,

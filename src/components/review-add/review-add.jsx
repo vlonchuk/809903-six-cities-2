@@ -1,7 +1,10 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import {MIN_COMMENT_LENGTH} from './../../consts/index.js';
+import {
+  MIN_COMMENT_LENGTH,
+  MAX_COMMENT_LENGTH
+} from './../../consts/index.js';
 import Operation from './../../reducer/operation/operation.js';
 
 class ReviewAdd extends PureComponent {
@@ -104,7 +107,7 @@ class ReviewAdd extends PureComponent {
           </svg>
         </label>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" onChange={this._onChange}
+      <textarea className="reviews__textarea form__textarea" id="review" name="review" onChange={this._onChange} maxLength={MAX_COMMENT_LENGTH}
         placeholder="Tell how was your stay, what you like and what can be improved"></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

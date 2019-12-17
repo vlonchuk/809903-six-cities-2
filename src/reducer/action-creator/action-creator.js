@@ -68,9 +68,10 @@ const ActionCreator = {
   },
 
   loadComments: (comments) => {
+    const sortedComments = comments.sort((c1, c2) => (new Date(c2.date)).getTime() - (new Date(c1.date)).getTime());
     return {
       type: LOAD_COMMENTS,
-      payload: comments
+      payload: sortedComments
     };
   },
 

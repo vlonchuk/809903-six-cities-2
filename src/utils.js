@@ -1,5 +1,7 @@
 import SortType from './consts/sort-type.js';
 import MAX_RATING from './consts/max-rating.js';
+//import {Notyf} from 'notyf';
+//import 'notyf/notyf.min.css';
 
 const sortPropertiesByOption = (option, properties) => {
   if (option === SortType.PRICE_HIGH_TO_LOW) {
@@ -63,7 +65,7 @@ const convertRatingToPercent = (rating) => {
 
 const getYearMonth = (date) => {
   const dt = new Date(date);
-  const month = dt.toLocaleDateString(`en`, {month: `short`});
+  const month = dt.toLocaleDateString(`en`, {month: `long`});
   const year = dt.getFullYear();
   return `${month} ${year}`;
 };
@@ -88,6 +90,11 @@ const getNearbyPlaces = (properties, current, top) => {
   return sorted.slice(0, top);
 };
 
+/*const notifier = new Notyf();
+const showError = (error) => {
+  notifier.error(error);
+}; */
+
 export {
   sortPropertiesByOption,
   getRand,
@@ -100,4 +107,5 @@ export {
   getFullDate,
   convertRawCommentData,
   getNearbyPlaces,
+//  showError,
 };

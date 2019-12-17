@@ -8,6 +8,10 @@ import Property from './../property/property.jsx';
 import Favorites from './../favorites/favorites.jsx';
 
 const App = (props) => {
+  if (props.offers.length <= 0) {
+    return <section />;
+  }
+
   return <section>
     <Switch>
       <Route path="/" exact component={Main} />

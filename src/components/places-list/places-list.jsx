@@ -41,7 +41,7 @@ class PlacesList extends PureComponent {
 }
 
 PlacesList.propTypes = {
-  listType: PropTypes.oneOf(PlacesListType).isRequired,
+  listType: PropTypes.oneOf(Object.values(PlacesListType)).isRequired,
   properties: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     city: PropTypes.shape({

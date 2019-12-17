@@ -28,18 +28,17 @@ const configureAPI = (dispatch) => {
   const onFail = (err) => {
     console.log(err);
     if (err.response.status === 401 && !isCheckLogin(err.config.method, err.config.url)) {
-      console.log(err);
       dispatch(ActionCreator.requireAuthorization(true));
       dispatch(ActionCreator.removeUser());
       history.push(Routes.LOGIN);
     } else {
-      history.push(Routes.MAIN);
+//      history.push(Routes.MAIN);
     }
 
-    return err;
+//    return err;
   };
 
-  api.interceptors.request.use(onSuccess);
+  //api.interceptors.request.use(onSuccess);
   api.interceptors.response.use(onSuccess, onFail);
 
   return api;

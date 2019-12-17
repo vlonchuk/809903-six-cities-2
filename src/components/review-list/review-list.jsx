@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import ReviewItem from './../review-item/review-item.jsx';
 import ReviewAdd from './../review-add/review-add.jsx';
+import {MAX_COMMENTS_NUMBER} from './../../consts/index.js';
 
 const ReviewList = ({hotelId, comments, isAuthorizationRequired}) => {
+  const viewComments = comments.slice(0, MAX_COMMENTS_NUMBER);
   return <section className="property__reviews reviews">
     <h2 className="reviews__title">Reviews &middot;
       <span className="reviews__amount">{comments.length}</span>
     </h2>
     <ul className="reviews__list">
-      {comments.map((el, i) => <ReviewItem review={el} key={i}/>)}
+      {viewComments.map((el, i) => <ReviewItem review={el} key={i}/>)}
     </ul>
     {isAuthorizationRequired ? null : <ReviewAdd hotelId={hotelId}/>}
   </section>;
