@@ -6,6 +6,8 @@ import {
   MAX_COMMENT_LENGTH
 } from './../../consts/index.js';
 import Operation from './../../reducer/operation/operation.js';
+import {showError} from './../../utils.js';
+import Errors from './../../consts/errors.js';
 
 class ReviewAdd extends PureComponent {
   constructor(props) {
@@ -50,7 +52,7 @@ class ReviewAdd extends PureComponent {
     submit.disabled = true;
   }
 
-  async onSubmit(evt) {
+  onSubmit(evt) {
     evt.preventDefault();
     const form = this._mapForm.current;
     if (!form) {
@@ -59,8 +61,9 @@ class ReviewAdd extends PureComponent {
 
     const rating = form.rating.value;
     const comment = form.review.value;
-    await this.props.onAddComment(this.props.hotelId, rating, comment);
-    this.clearForm();
+    this.props.onAddComment(this.props.hotelId, rating, comment)
+      .then(() => this.clearForm())
+      .catch((err) => showError(err, Errors.ERR_ADD_COMMENT));
   }
 
   render() {
@@ -126,7 +129,7 @@ ReviewAdd.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   onAddComment: (hotelId, rating, comment) => {
-    dispatch(Operation.addComment(hotelId, rating, comment));
+    return dispatch(Operation.addComment(hotelId, rating, comment));
   }
 });
 

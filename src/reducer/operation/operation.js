@@ -20,7 +20,8 @@ const Operation = {
           if (response.status === 200) {
             loadUser(dispatch, response.data);
           }
-        });
+        })
+        .catch(() => {});
     };
   },
 
@@ -100,7 +101,7 @@ const Operation = {
   loadFavorites: () => {
     return (dispatch, _, api) => {
       return api
-        .get(`/favorite`)
+        .get(`/favorite123`)
         .then((response) => {
           if (response.status === 200) {
             let data = convertRawOffersData(response.data);

@@ -31,14 +31,14 @@ const configureAPI = (dispatch) => {
       dispatch(ActionCreator.requireAuthorization(true));
       dispatch(ActionCreator.removeUser());
       history.push(Routes.LOGIN);
+      return err.response;
     } else {
-//      history.push(Routes.MAIN);
+      throw err;
     }
 
-//    return err;
   };
 
-  //api.interceptors.request.use(onSuccess);
+  api.interceptors.request.use(onSuccess);
   api.interceptors.response.use(onSuccess, onFail);
 
   return api;

@@ -5,8 +5,10 @@ import PageHeader from './../page-header/page-header.jsx';
 import {connect} from 'react-redux';
 import Operation from './../../reducer/operation/operation.js';
 import history from './../../history.js';
-//import {showError} from './../../utils.js';
-import notifier from './../../notifier.js';
+import {showError} from './../../utils.js';
+import {Routes} from './../../consts/api.js';
+import Errors from './../../consts/errors.js';
+import {ERR_BACKGROUND, OK_BACKGROUND} from './../../consts/style.js';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -20,19 +22,19 @@ class Login extends PureComponent {
 
   onInputChangeHandler(evt) {
     if (evt.target.validity.valid) {
-      evt.target.style = `background: #dfd`;
+      evt.target.style = ERR_BACKGROUND;
     } else {
-      evt.target.style = `background: #fdd`;
+      evt.target.style = OK_BACKGROUND;
     }
   }
 
-  async onLogin(evt) {
+  onLogin(evt) {
     evt.preventDefault();
     if (!(this._mapEmail.current && this._mapPassword.current)) {
       return;
     }
 
-/*    if (!this._mapEmail.current.checkValidity() ||
+    /*if (!this._mapEmail.current.checkValidity() ||
         !this._mapPassword.current.checkValidity()) {
       return;
     }*/
@@ -40,21 +42,16 @@ class Login extends PureComponent {
     const email = this._mapEmail.current.value.trim();
     const password = this._mapPassword.current.value.trim();
 
-    try {
-      await this.props.onLogin(email, password);
-      alert('2');
-    } catch (error) {
-      //showError(error);
-      alert(error);
-      notifier.error(error);
-      return;
-    }
-    history.push(`/`);
+    this.props.onLogin(email, password)
+      .then(() => {
+        history.push(Routes.MAIN);
+      })
+      .catch((err) => showError(err, Errors.ERR_LOGIN));
   }
 
   render() {
     if (this.props.user) {
-      return <Redirect to="/"/>;
+      return <Redirect to={Routes.MAIN}/>;
     }
 
     return <div className="page page--gray page--login">
@@ -66,12 +63,12 @@ class Login extends PureComponent {
             <form className="login__form form" action="#" method="post">
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
-                <input className="login__input form__input" ref={this._mapEmail} type="email" name="email" placeholder="Email" id="email-123" required
+                <input className="login__input form__input" ref={this._mapEmail} type="email" name="email" placeholder="Email" required
                   onChange={this._onInputChangeHandler}></input>
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
-                <input className="login__input form__input" ref={this._mapPassword} type="password" name="password" placeholder="Password" id="pwd-123" required
+                <input className="login__input form__input" ref={this._mapPassword} type="password" name="password" placeholder="Password" required
                   onChange={this._onInputChangeHandler}></input>
               </div>
               <button className="login__submit form__submit button" type="submit" onClick={this._onLogin}>Sign in</button>
@@ -103,7 +100,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   onLogin: (email, password) => {
-    dispatch(Operation.login(email, password));
+    return dispatch(Operation.login(email, password));
   }
 });
 

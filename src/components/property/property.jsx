@@ -9,6 +9,7 @@ import {
   convertRatingToPercent,
   getPropertiesByCity,
   getNearbyPlaces,
+  showError,
 } from './../../utils.js';
 import {
   MAX_IMAGE_COUNT,
@@ -18,6 +19,7 @@ import ReviewList from './../review-list/review-list.jsx';
 import Map from './../map/map.jsx';
 import PlacesList from './../places-list/places-list.jsx';
 import PlacesListType from './../../consts/places-list-type.js';
+import Errors from './../../consts/errors.js';
 
 class Property extends PureComponent {
   constructor(props) {
@@ -201,9 +203,10 @@ Property.getLinkProps = (offers, ownProps) => {
   };
 };
 
-Property.loadParams = async (dispatch, hotelId, property) => {
+Property.loadParams = (dispatch, hotelId, property) => {
   dispatch(ActionCreator.activateCard(property));
-  await dispatch(Operation.loadComments(hotelId));
+  dispatch(Operation.loadComments(hotelId))
+    .catch((err) => showError(err, Errors.ERR_LOAD_COMMENTS));
 };
 
 const PropertyWrapped = connect(mapStateToProps, mapDispathToProps)(Property);

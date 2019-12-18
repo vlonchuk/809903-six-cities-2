@@ -1,7 +1,7 @@
 import SortType from './consts/sort-type.js';
 import MAX_RATING from './consts/max-rating.js';
-//import {Notyf} from 'notyf';
-//import 'notyf/notyf.min.css';
+import {Notyf} from 'notyf';
+import 'notyf/notyf.min.css';
 
 const sortPropertiesByOption = (option, properties) => {
   if (option === SortType.PRICE_HIGH_TO_LOW) {
@@ -90,10 +90,14 @@ const getNearbyPlaces = (properties, current, top) => {
   return sorted.slice(0, top);
 };
 
-/*const notifier = new Notyf();
-const showError = (error) => {
-  notifier.error(error);
-}; */
+const notifier = new Notyf();
+const showError = (error, errType) => {
+  if (errType) {
+    notifier.error(errType + `. ${error.toString()}`);
+  } else {
+    notifier.error(error.toString());
+  }
+};
 
 export {
   sortPropertiesByOption,
@@ -107,5 +111,5 @@ export {
   getFullDate,
   convertRawCommentData,
   getNearbyPlaces,
-//  showError,
+  showError,
 };

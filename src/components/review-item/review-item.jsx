@@ -4,7 +4,7 @@ import {
   convertRatingToPercent,
   getFullDate,
   getYearMonth,
-} from '../../utils.js';
+} from './../../utils.js';
 
 const ReviewItem = ({review}) => {
   const {user, rating, comment, date} = review;

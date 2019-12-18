@@ -6,6 +6,8 @@ import PageHeader from './../page-header/page-header.jsx';
 import PlacesList from './../places-list/places-list.jsx';
 import {Link} from "react-router-dom";
 import PlacesListType from './../../consts/places-list-type.js';
+import {showError} from './../../utils.js';
+import Errors from './../../consts/errors.js';
 
 class Favorites extends PureComponent {
   constructor(props) {
@@ -13,7 +15,8 @@ class Favorites extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.loadFavorites();
+    this.props.loadFavorites()
+      .catch((err) => showError(err, Errors.ERR_LOAD_FAVORITES));
   }
 
   render() {
@@ -96,7 +99,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
   loadFavorites: () => {
-    dispatch(Operation.loadFavorites());
+    return dispatch(Operation.loadFavorites());
   },
 });
 

@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import Operation from './../../reducer/operation/operation.js';
 import PlaceCard from './../place-card/place-card.jsx';
 import PlacesListType from './../../consts/places-list-type.js';
+import {showError} from './../../utils.js';
+import Errors from './../../consts/errors.js';
 
 class PlacesList extends PureComponent {
   constructor(props) {
@@ -75,7 +77,8 @@ const mapStateToProps = (_, ownProps) => ownProps;
 
 const mapDispatchToProps = (dispatch) => ({
   onAddToFavorite: (hotelId, status, favorites) => {
-    dispatch(Operation.addToFavorite(hotelId, status, favorites));
+    dispatch(Operation.addToFavorite(hotelId, status, favorites))
+      .catch((err) => showError(err, Errors.ERR_ADD_FAVORITE));
   },
 });
 

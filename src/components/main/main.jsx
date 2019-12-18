@@ -4,8 +4,8 @@ import CitiesList from './../cities-list/cities-list.jsx';
 import {connect} from "react-redux";
 import ActionCreator from './../../reducer/action-creator/action-creator.js';
 import Operation from './../../reducer/operation/operation.js';
-import CitiesPlaces from '../cities-places/cities-places.jsx';
-import CitiesNoPlaces from '../cities-no-places/cities-no-places.jsx';
+import CitiesPlaces from './../cities-places/cities-places.jsx';
+import CitiesNoPlaces from './../cities-no-places/cities-no-places.jsx';
 import {getRand} from './../../utils.js';
 import PageHeader from './../page-header/page-header.jsx';
 import {
