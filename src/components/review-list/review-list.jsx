@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import ReviewItem from './../review-item/review-item.jsx';
 import ReviewAdd from './../review-add/review-add.jsx';
-import {MAX_COMMENTS_NUMBER} from './../../consts/index.js';
+import {MAX_COMMENTS_NUMBER} from '../../consts/constraints.js';
 
 const ReviewList = ({hotelId, comments, isAuthorizationRequired}) => {
   const viewComments = comments.slice(0, MAX_COMMENTS_NUMBER);

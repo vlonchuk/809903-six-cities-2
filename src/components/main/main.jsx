@@ -34,6 +34,8 @@ class Main extends PureComponent {
     const noPlaces = (city !== `` && properties.length <= 0);
     const mainClassName = `page__main page__main--index` + (noPlaces ? ` page__main--index-empty` : ``);
 
+    window.offers = offers;
+
     return <div className="page page--gray page--main" key="app-main">
       <PageHeader user={user} />
       <main className={mainClassName}>

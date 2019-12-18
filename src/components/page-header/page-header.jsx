@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import {Routes} from './../../consts/api.js';
+import {Widths, Heights} from './../../consts/style.js';
 
 const PageHeader = ({user}) => {
   const link = (user ? Routes.FAVORITES : Routes.LOGIN);
@@ -10,7 +11,7 @@ const PageHeader = ({user}) => {
       <div className="header__wrapper">
         <div className="header__left">
           <Link to={Routes.MAIN} className="header__logo-link">
-            <img className="header__logo" src="/img/logo.svg" alt="6 cities logo" width="81" height="41"></img>
+            <img className="header__logo" src="/img/logo.svg" alt="6 cities logo" width={Widths.HEADER_LOGO} height={Heights.HEADER_LOGO}></img>
           </Link>
         </div>
         <nav className="header__nav">

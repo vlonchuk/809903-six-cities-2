@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Widths, Heights} from './../../consts/style';
 
 const Sort = ({options, activeOption, opened, properties, onArrowClick, onOptionClick}) => {
   const css = `places__options places__options--custom` + (opened ? ` places__options--opened` : ``);
@@ -11,7 +12,7 @@ const Sort = ({options, activeOption, opened, properties, onArrowClick, onOption
     <span className="places__sorting-caption">Sort by</span>
     <span className="places__sorting-type" tabIndex="0" onClick={() => onArrowClick(opened)}>
       &nbsp;{activeOption}
-      <svg className="places__sorting-arrow" width="7" height="4">
+      <svg className="places__sorting-arrow" width={Widths.SORT_ARROW} height={Heights.SORT_ARROW}>
         <use xlinkHref="#icon-arrow-select"></use>
       </svg>
     </span>

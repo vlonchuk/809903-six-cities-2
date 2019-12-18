@@ -6,6 +6,8 @@ import Main from './../main/main.jsx';
 import Login from './../login/login.jsx';
 import Property from './../property/property.jsx';
 import Favorites from './../favorites/favorites.jsx';
+import NotFoundPage from './../not-found-page/not-found-page.jsx';
+import {Routes} from './../../consts/api.js';
 
 const App = (props) => {
   if (props.offers.length <= 0) {
@@ -14,14 +16,18 @@ const App = (props) => {
 
   return <section>
     <Switch>
-      <Route path="/" exact component={Main} />
-      <Route path="/login" exact component={Login} />
-      <Route path="/offer/:id" exact render={(offerProps) => {
+      <Route path={Routes.MAIN} exact component={Main} />
+      <Route path={Routes.LOGIN} exact component={Login} />
+      <Route path={Routes.OFFER} exact render={(offerProps) => {
         const newProps = props.getPropertyProps(props.offers, offerProps);
+        if (!newProps) {
+          return <NotFoundPage/>;
+        }
         props.loadPropertyParams(newProps.id, newProps.property);
         return <Property {...newProps} />;
       }} />
-      <Route path="/favorites" exact component={Favorites} />
+      <Route path={Routes.FAVORITES} exact component={Favorites} />
+      <Route component={NotFoundPage} />
     </Switch>
   </section>;
 };

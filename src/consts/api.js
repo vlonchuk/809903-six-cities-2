@@ -10,7 +10,16 @@ const ApiMethods = {
 const Routes = {
   MAIN: `/`,
   LOGIN: `/login`,
+  OFFER: `/offer/:id`,
   FAVORITES: `/favorites`,
+  NOT_FOUND: `/not-found`,
+};
+
+const Urls = {
+  LOGIN: `/login`,
+  HOTELS: `/hotels`,
+  FAVORITE: `/favorite`,
+  COMMENTS: `/comments`,
 };
 
 const TIMEOUT = 5000;
@@ -20,4 +29,5 @@ export {
   ApiMethods,
   Routes,
   TIMEOUT,
+  Urls,
 };

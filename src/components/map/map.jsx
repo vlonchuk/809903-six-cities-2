@@ -2,6 +2,13 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 import {connect} from 'react-redux';
+import {
+  ICON_URL,
+  ICON_URL_ACTIVE,
+  ICON_SIZE,
+  TILE_LAYER,
+  ATTRIBUTION
+} from './../../consts/map.js';
 
 class Map extends PureComponent {
   constructor(props) {
@@ -9,12 +16,12 @@ class Map extends PureComponent {
 
     this._mapRef = React.createRef();
     this._icon = leaflet.icon({
-      iconUrl: `/img/pin.svg`,
-      iconSize: [30, 30]
+      iconUrl: ICON_URL,
+      iconSize: [ICON_SIZE, ICON_SIZE]
     });
     this._iconActive = leaflet.icon({
-      iconUrl: `/img/pin-active.svg`,
-      iconSize: [30, 30]
+      iconUrl: ICON_URL_ACTIVE,
+      iconSize: [ICON_SIZE, ICON_SIZE]
     });
   }
 
@@ -39,21 +46,21 @@ class Map extends PureComponent {
   componentDidMount() {
     this._chosenCity = this.currentCity;
     const {latitude, longitude, zoom} = this.currentCity.location;
-    const city = [latitude, longitude];
+    const cityPosition = [latitude, longitude];
 
     if (this._mapRef.current) {
       const map = leaflet.map(this._mapRef.current, {
-        center: city,
+        center: cityPosition,
         zoom,
         zoomControl: false,
         marker: true
       });
       this._map = map;
-      map.setView(city, this._zoom);
+      map.setView(cityPosition, this._zoom);
 
       leaflet
-      .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
-        attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
+      .tileLayer(TILE_LAYER, {
+        attribution: ATTRIBUTION
       })
       .addTo(map);
 

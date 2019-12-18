@@ -1,13 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Link, Redirect} from "react-router-dom";
 import Operation from './../../reducer/operation/operation.js';
 import PageHeader from './../page-header/page-header.jsx';
 import PlacesList from './../places-list/places-list.jsx';
-import {Link} from "react-router-dom";
 import PlacesListType from './../../consts/places-list-type.js';
 import {showError} from './../../utils.js';
 import Errors from './../../consts/errors.js';
+import {Routes} from './../../consts/api.js';
+import {Widths, Heights} from '../../consts/style.js';
 
 class Favorites extends PureComponent {
   constructor(props) {
@@ -15,19 +17,25 @@ class Favorites extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.loadFavorites()
-      .catch((err) => showError(err, Errors.ERR_LOAD_FAVORITES));
+    if (this.props.user) {
+      this.props.loadFavorites()
+        .catch((err) => showError(err, Errors.ERR_LOAD_FAVORITES));
+    }
   }
 
   render() {
-    this._cities = this.props.properties.reduce((acc, curr) => {
-      if (!acc.has(curr.city.name)) {
-        acc.set(curr.city.name, [curr]);
+    if (!this.props.user) {
+      return <Redirect to={Routes.LOGIN}/>;
+    }
+
+    this._cities = this.props.properties.reduce((cities, property) => {
+      if (!cities.has(property.city.name)) {
+        cities.set(property.city.name, [property]);
       } else {
-        const arr = acc.get(curr.city.name);
-        arr.push(curr);
+        const arrayOfCities = cities.get(property.city.name);
+        arrayOfCities.push(property);
       }
-      return acc;
+      return cities;
     }, new Map());
 
     return <div className="page">
@@ -77,7 +85,7 @@ class Favorites extends PureComponent {
   renderFooter() {
     return <footer className="footer">
       <Link to="/" className="footer__logo-link">
-        <img className="footer__logo" src="/img/logo.svg" alt="6 cities logo" width="64" height="33"></img>
+        <img className="footer__logo" src="/img/logo.svg" alt="6 cities logo" width={Widths.FAVORITES_LOGO} height={Heights.FAVORITES_LOGO}></img>
       </Link>
     </footer>;
   }

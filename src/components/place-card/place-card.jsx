@@ -4,22 +4,18 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {convertRatingToPercent} from './../../utils.js';
 import PlacesListType from './../../consts/places-list-type.js';
-
-const LARGE_WIDTH = 260;
-const LARGE_HEIGHT = 200;
-const SMALL_WIDTH = 150;
-const SMALL_HEIGHT = 110;
+import {Widths, Heights} from './../../consts/style.js';
 
 class PlaceCard extends PureComponent {
   constructor(props) {
     super(props);
 
-    this._mouseEnterHandler = this.mouseEnterHandler.bind(this);
-    this._mouseLeaveHandler = this.mouseLeaveHandler.bind(this);
-    this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
+    this._handleMouseEnter = this.handleMouseEnter.bind(this);
+    this._handleMouseLeave = this.handleMouseLeave.bind(this);
+    this._handleAddToFavorite = this.handleAddToFavorite.bind(this);
 
-    this._imgWidth = LARGE_WIDTH;
-    this._imgHeight = LARGE_HEIGHT;
+    this._imgWidth = Widths.PROPERTY_IMAGE_LARGE;
+    this._imgHeight = Heights.PROPERTY_IMAGE_LARGE;
 
     switch (this.props.listType) {
       case PlacesListType.CITY:
@@ -36,34 +32,35 @@ class PlaceCard extends PureComponent {
         this._cardClass = `favorites__card place-card`;
         this._wrapperClass = `favorites__image-wrapper place-card__image-wrapper`;
         this._infoClass = `favorites__card-info place-card__info`;
-        this._imgWidth = SMALL_WIDTH;
-        this._imgHeight = SMALL_HEIGHT;
+        this._imgWidth = Widths.PROPERTY_IMAGE_SMALL;
+        this._imgHeight = Heights.PROPERTY_IMAGE_SMALL;
         break;
     }
   }
 
-  mouseEnterHandler() {
+  handleMouseEnter() {
     if (this.props.onMouseEnter) {
       this.props.onMouseEnter(this.props.data);
     }
   }
 
-  mouseLeaveHandler() {
+  handleMouseLeave() {
     if (this.props.onMouseLeave) {
       this.props.onMouseLeave();
     }
   }
 
-  addToFavoriteHandler() {
+  handleAddToFavorite() {
     this.props.onAddToFavorite(this.props.data.id, this.props.data.isFavorite ? 0 : 1, this.props.favorites);
   }
 
   render() {
     const bookmarkClass = `place-card__bookmark-button button` + (this.props.data.isFavorite ? ` place-card__bookmark-button--active` : ``);
-    const ratingWidth = convertRatingToPercent(this.props.data.rating);
+    const roundedRating = Math.round(this.props.data.rating);
+    const ratingWidth = convertRatingToPercent(roundedRating);
 
     return <article className={`${this._cardClass}`} id={this.props.data.id}
-      onMouseEnter={this._mouseEnterHandler} onMouseLeave={this._mouseLeaveHandler}>
+      onMouseEnter={this._handleMouseEnter} onMouseLeave={this._handleMouseLeave}>
       {
         this.props.data.isPremium ?
           <div className="place-card__mark">
@@ -85,8 +82,8 @@ class PlaceCard extends PureComponent {
             <b className="place-card__price-value">{`€`}{this.props.data.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={bookmarkClass} type="button" onClick={this._addToFavoriteHandler}>
-            <svg className="place-card__bookmark-icon" width="18" height="19">
+          <button className={bookmarkClass} type="button" onClick={this._handleAddToFavorite}>
+            <svg className="place-card__bookmark-icon" width={Widths.PLACE_CARD_BOOKMARK_ICON} height={Heights.PLACE_CARD_BOOKMARK_ICON}>
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
             <span className="visually-hidden">To bookmarks</span>

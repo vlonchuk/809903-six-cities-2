@@ -5,6 +5,7 @@ import {
   getFullDate,
   getYearMonth,
 } from './../../utils.js';
+import {Widths, Heights} from './../../consts/style.js';
 
 const ReviewItem = ({review}) => {
   const {user, rating, comment, date} = review;
@@ -12,7 +13,7 @@ const ReviewItem = ({review}) => {
   return <li className="reviews__item">
     <div className="reviews__user user">
       <div className="reviews__avatar-wrapper user__avatar-wrapper">
-        <img className="reviews__avatar user__avatar" src={user.avatarUrl} width="54" height="54" alt="Reviews avatar"></img>
+        <img className="reviews__avatar user__avatar" src={user.avatarUrl} width={Widths.REVIEW_AVATAR} height={Heights.REVIEW_AVATAR} alt="Reviews avatar"></img>
       </div>
       <span className="reviews__user-name">
         {user.name}

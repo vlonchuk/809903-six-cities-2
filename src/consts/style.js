@@ -1,2 +1,36 @@
-export const ERR_BACKGROUND = `background: #dfd`;
-export const OK_BACKGROUND = `background: #fdd`;
+const Backgrounds = {
+  ERR: `background: #dfd`,
+  OK: `background: #fdd`,
+};
+
+const Widths = {
+  HEADER_LOGO: 81,
+  PROPERTY_IMAGE_LARGE: 260,
+  PROPERTY_IMAGE_SMALL: 150,
+  PROPERTY_BOOKMARK_ICON: 31,
+  PROPERTY_AVATAR: 74,
+  FORM_STAR_IMAGE: 37,
+  REVIEW_AVATAR: 54,
+  SORT_ARROW: 7,
+  FAVORITES_LOGO: 64,
+  PLACE_CARD_BOOKMARK_ICON: 18,
+};
+
+const Heights = {
+  HEADER_LOGO: 41,
+  PROPERTY_IMAGE_LARGE: 200,
+  PROPERTY_IMAGE_SMALL: 110,
+  PROPERTY_BOOKMARK_ICON: 33,
+  PROPERTY_AVATAR: 74,
+  FORM_STAR_IMAGE: 33,
+  REVIEW_AVATAR: 54,
+  SORT_ARROW: 4,
+  FAVORITES_LOGO: 33,
+  PLACE_CARD_BOOKMARK_ICON: 19,
+};
+
+export {
+  Backgrounds,
+  Widths,
+  Heights,
+};

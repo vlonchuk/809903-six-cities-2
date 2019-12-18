@@ -14,20 +14,21 @@ import {
 import {
   MAX_IMAGE_COUNT,
   MAX_NEARBY_PLACES,
-} from './../../consts/index.js';
+} from '../../consts/constraints.js';
 import ReviewList from './../review-list/review-list.jsx';
 import Map from './../map/map.jsx';
 import PlacesList from './../places-list/places-list.jsx';
 import PlacesListType from './../../consts/places-list-type.js';
 import Errors from './../../consts/errors.js';
+import {Widths, Heights} from './../../consts/style.js';
 
 class Property extends PureComponent {
   constructor(props) {
     super(props);
-    this._addToFavoriteHandler = this.addToFavoriteHandler.bind(this);
+    this._handleAddToFavorite = this.handleAddToFavorite.bind(this);
   }
 
-  addToFavoriteHandler() {
+  handleAddToFavorite() {
     this.props.onAddToFavorite(this.props.property.id, this.props.property.isFavorite ? 0 : 1);
   }
 
@@ -56,7 +57,8 @@ class Property extends PureComponent {
   renderProperty() {
     const {property} = this.props;
     const bookmarkClass = `property__bookmark-button button` + (property.isFavorite ? ` property__bookmark-button--active` : ``);
-    const ratingWidth = convertRatingToPercent(property.rating);
+    const roundedRating = Math.round(property.rating);
+    const ratingWidth = convertRatingToPercent(roundedRating);
 
     return <React.Fragment>
       <div className="property__gallery-container container">
@@ -83,8 +85,8 @@ class Property extends PureComponent {
             <h1 className="property__name">
               {property.title}
             </h1>
-            <button className={bookmarkClass} type="button" onClick={this._addToFavoriteHandler}>
-              <svg className="property__bookmark-icon" width="31" height="33">
+            <button className={bookmarkClass} type="button" onClick={this._handleAddToFavorite}>
+              <svg className="property__bookmark-icon" width={Widths.PROPERTY_BOOKMARK_ICON} height={Heights.PROPERTY_BOOKMARK_ICON}>
                 <use xlinkHref="#icon-bookmark"></use>
               </svg>
               <span className="visually-hidden">To bookmarks</span>
@@ -139,7 +141,7 @@ class Property extends PureComponent {
       <h2 className="property__host-title">Meet the host</h2>
       <div className="property__host-user user">
         <div className={avatarClass}>
-          <img className="property__avatar user__avatar" src={`/` + property.host.avatarUrl} width="74" height="74" alt="Host avatar"></img>
+          <img className="property__avatar user__avatar" src={`/` + property.host.avatarUrl} width={Widths.PROPERTY_AVATAR} height={Heights.PROPERTY_AVATAR} alt="Host avatar"></img>
         </div>
         <span className="property__user-name">
           {property.host.name}
@@ -175,8 +177,8 @@ Property.propTypes = {
 
 const getNearbyProperties = (property, offers) => {
   const properties = getPropertiesByCity(property.city.name, offers);
-  const exceptCurrent = properties.filter((el) => el.id !== property.id);
-  return getNearbyPlaces(exceptCurrent, property, MAX_NEARBY_PLACES);
+  const propertiesExceptCurrent = properties.filter((el) => el.id !== property.id);
+  return getNearbyPlaces(propertiesExceptCurrent, property, MAX_NEARBY_PLACES);
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
@@ -192,6 +194,11 @@ const mapDispathToProps = (dispatch) => ({
 Property.getLinkProps = (offers, ownProps) => {
   const id = Number.parseInt(ownProps.match.params.id, 10);
   const property = getPropertyById(offers, id);
+
+  if (!property) {
+    return null;
+  }
+
   const properties = getNearbyProperties(property, offers);
   const mapProperties = [property].concat(properties);
 

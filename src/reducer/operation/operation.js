@@ -4,6 +4,7 @@ import {
   convertRawUserData,
   convertRawCommentData,
 } from './../../utils.js';
+import {Urls} from './../../consts/api.js';
 
 const loadUser = (dispatch, data) => {
   const user = convertRawUserData(data);
@@ -15,7 +16,7 @@ const Operation = {
   checkLogin: () => {
     return (dispatch, _, api) => {
       return api
-        .get(`/login`)
+        .get(Urls.LOGIN)
         .then((response) => {
           if (response.status === 200) {
             loadUser(dispatch, response.data);
@@ -28,7 +29,7 @@ const Operation = {
   login: (email, password) => {
     return (dispatch, _, api) => {
       return api
-        .post(`/login`, {email, password})
+        .post(Urls.LOGIN, {email, password})
         .then((response) => {
           if (response.status === 200) {
             loadUser(dispatch, response.data);
@@ -40,7 +41,7 @@ const Operation = {
   loadOffers: () => {
     return (dispatch, _, api) => {
       return api
-        .get(`/hotels`)
+        .get(Urls.HOTELS)
         .then((response) => {
           let data = convertRawOffersData(response.data);
           dispatch(ActionCreator.loadOffers(data));
@@ -61,7 +62,7 @@ const Operation = {
   addToFavorite: (hotelId, status, favorites) => {
     return (dispatch, _, api) => {
       return api
-        .post(`/favorite/${hotelId}/${status}`)
+        .post(`${Urls.FAVORITE}/${hotelId}/${status}`)
         .then((response) => {
           if (response.status === 200) {
             dispatch(Operation.loadOffers());
@@ -76,7 +77,7 @@ const Operation = {
   loadComments: (hotelId) => {
     return (dispatch, _, api) => {
       return api
-        .get(`/comments/${hotelId}`)
+        .get(`${Urls.COMMENTS}/${hotelId}`)
         .then((response) => {
           if (response.status === 200) {
             const data = convertRawCommentData(response.data);
@@ -89,7 +90,7 @@ const Operation = {
   addComment: (hotelId, rating, comment) => {
     return (dispatch, _, api) => {
       return api
-        .post(`/comments/${hotelId}`, {rating, comment})
+        .post(`${Urls.COMMENTS}/${hotelId}`, {rating, comment})
         .then((response) => {
           if (response.status === 200) {
             dispatch(Operation.loadComments(hotelId));
@@ -101,7 +102,7 @@ const Operation = {
   loadFavorites: () => {
     return (dispatch, _, api) => {
       return api
-        .get(`/favorite123`)
+        .get(Urls.FAVORITE)
         .then((response) => {
           if (response.status === 200) {
             let data = convertRawOffersData(response.data);

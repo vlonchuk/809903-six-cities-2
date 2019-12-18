@@ -8,7 +8,7 @@ import history from './../../history.js';
 import {showError} from './../../utils.js';
 import {Routes} from './../../consts/api.js';
 import Errors from './../../consts/errors.js';
-import {ERR_BACKGROUND, OK_BACKGROUND} from './../../consts/style.js';
+import {Backgrounds} from './../../consts/style.js';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -16,28 +16,28 @@ class Login extends PureComponent {
 
     this._mapEmail = React.createRef();
     this._mapPassword = React.createRef();
-    this._onLogin = this.onLogin.bind(this);
-    this._onInputChangeHandler = this.onInputChangeHandler.bind(this);
+    this._handleLogin = this.handleLogin.bind(this);
+    this._handleInputChange = this.handleInputChange.bind(this);
   }
 
-  onInputChangeHandler(evt) {
+  handleInputChange(evt) {
     if (evt.target.validity.valid) {
-      evt.target.style = ERR_BACKGROUND;
+      evt.target.style = Backgrounds.ERR;
     } else {
-      evt.target.style = OK_BACKGROUND;
+      evt.target.style = Backgrounds.OK;
     }
   }
 
-  onLogin(evt) {
+  handleLogin(evt) {
     evt.preventDefault();
     if (!(this._mapEmail.current && this._mapPassword.current)) {
       return;
     }
 
-    /*if (!this._mapEmail.current.checkValidity() ||
+    if (!this._mapEmail.current.checkValidity() ||
         !this._mapPassword.current.checkValidity()) {
       return;
-    }*/
+    }
 
     const email = this._mapEmail.current.value.trim();
     const password = this._mapPassword.current.value.trim();
@@ -64,14 +64,14 @@ class Login extends PureComponent {
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input className="login__input form__input" ref={this._mapEmail} type="email" name="email" placeholder="Email" required
-                  onChange={this._onInputChangeHandler}></input>
+                  onChange={this._handleInputChange}></input>
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input className="login__input form__input" ref={this._mapPassword} type="password" name="password" placeholder="Password" required
-                  onChange={this._onInputChangeHandler}></input>
+                  onChange={this._handleInputChange}></input>
               </div>
-              <button className="login__submit form__submit button" type="submit" onClick={this._onLogin}>Sign in</button>
+              <button className="login__submit form__submit button" type="submit" onClick={this._handleLogin}>Sign in</button>
             </form>
           </section>
           <section className="locations locations--login locations--current">
