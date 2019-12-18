@@ -21,12 +21,10 @@ const configureAPI = (dispatch) => {
   });
 
   const onSuccess = (response) => {
-    console.log(response);
     return response;
   };
 
   const onFail = (err) => {
-    console.log(err);
     if (err.response.status === 401 && !isCheckLogin(err.config.method, err.config.url)) {
       dispatch(ActionCreator.requireAuthorization(true));
       dispatch(ActionCreator.removeUser());

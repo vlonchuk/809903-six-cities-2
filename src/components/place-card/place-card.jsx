@@ -129,4 +129,5 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const PlaceCardWrapped = connect(mapStateToProps)(PlaceCard);
+export {PlaceCard};
 export default PlaceCardWrapped;

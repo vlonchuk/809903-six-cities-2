@@ -113,7 +113,6 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const MapWrapped = connect(mapStateToProps)(Map);
-
 export {Map};
 export default MapWrapped;
 

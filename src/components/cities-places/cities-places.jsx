@@ -57,5 +57,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 const CitiesPlacesWrapped = connect(mapStateToProps, mapDispatchToProps)(CitiesPlaces);
-
+export {CitiesPlaces};
 export default CitiesPlacesWrapped;

@@ -109,6 +109,5 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const LoginWrapped = connect(mapStateToProps, mapDispatchToProps)(Login);
-
 export {Login};
 export default LoginWrapped;

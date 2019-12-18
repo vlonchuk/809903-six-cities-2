@@ -31,7 +31,7 @@ class Main extends PureComponent {
       user
     } = this.props;
     const properties = this.props.getCityProperties(city, sortActiveOption, offers);
-    const noPlaces = (city !== `` && properties.length <= 0);
+    const noPlaces = (city !== `` && properties && properties.length <= 0);
     const mainClassName = `page__main page__main--index` + (noPlaces ? ` page__main--index-empty` : ``);
 
     window.offers = offers;
@@ -179,7 +179,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const MainWrapped = connect(mapStateToProps, mapDispatchToProps)(Main);
-
 export {Main};
-
 export default MainWrapped;

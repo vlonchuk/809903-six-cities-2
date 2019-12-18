@@ -5,7 +5,7 @@ import offers from './../../mocks/offers.js';
 
 it(`Map correctly renders after relaunch`, () => {
   const tree = renderer
-    .create(<Map properties={offers} />)
+    .create(<Map mapClass="cities__map" properties={offers} />)
     .toJSON();
 
   expect(tree).toMatchSnapshot();

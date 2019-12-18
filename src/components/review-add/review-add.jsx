@@ -135,4 +135,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ReviewAddWrapped = connect(null, mapDispatchToProps)(ReviewAdd);
+export {ReviewAdd};
 export default ReviewAddWrapped;

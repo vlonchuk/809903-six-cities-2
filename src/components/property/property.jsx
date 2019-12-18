@@ -217,4 +217,5 @@ Property.loadParams = (dispatch, hotelId, property) => {
 };
 
 const PropertyWrapped = connect(mapStateToProps, mapDispathToProps)(Property);
+export {Property};
 export default PropertyWrapped;

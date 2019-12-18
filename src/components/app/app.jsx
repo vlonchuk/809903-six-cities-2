@@ -53,4 +53,5 @@ const mapDispathToProps = (dispatch) => ({
 });
 
 const AppWrapped = connect(mapStateToProps, mapDispathToProps)(App);
+export {App};
 export default AppWrapped;

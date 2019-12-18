@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Main correctly renders after relaunch 1`] = `
+exports[`NotFoundPage correctly renders after relaunch 1`] = `
 <div
-  className="page page--gray page--main"
+  className="page page--gray page--login"
 >
   <header
     className="header"
@@ -60,41 +60,15 @@ exports[`Main correctly renders after relaunch 1`] = `
     </div>
   </header>
   <main
-    className="page__main page__main--index"
+    className="page__main page__main--login"
   >
-    <h1
-      className="visually-hidden"
-    >
-      Cities
-    </h1>
     <div
-      className="tabs"
+      className="page__login-container container"
     >
-      <section
-        className="locations container"
-      >
-        <ul
-          className="locations__list tabs__list"
-        >
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item tabs__item--active"
-              href="#"
-              onClick={[Function]}
-            >
-              <span>
-                Amsterdam
-              </span>
-            </a>
-          </li>
-        </ul>
-      </section>
+      <h3>
+        404: NOT FOUND
+      </h3>
     </div>
-    <div
-      className="cities"
-    />
   </main>
 </div>
 `;

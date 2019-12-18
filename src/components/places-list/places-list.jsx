@@ -83,6 +83,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const PlacesListWrapped = connect(mapStateToProps, mapDispatchToProps)(PlacesList);
-
 export {PlacesList};
 export default PlacesListWrapped;

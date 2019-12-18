@@ -112,4 +112,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const FavoritesWrapped = connect(mapStateToProps, mapDispatchToProps)(Favorites);
+export {Favorites};
 export default FavoritesWrapped;

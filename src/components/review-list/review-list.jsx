@@ -30,5 +30,5 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const ReviewListWrapped = connect(mapStateToProps)(ReviewList);
-
+export {ReviewList};
 export default ReviewListWrapped;

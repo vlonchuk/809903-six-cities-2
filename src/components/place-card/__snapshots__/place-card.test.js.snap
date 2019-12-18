@@ -11,14 +11,15 @@ exports[`PlaceCard correctly renders after relaunch 1`] = `
     className="cities__image-wrapper place-card__image-wrapper"
   >
     <a
-      href="#"
+      href="/offer/1"
+      onClick={[Function]}
     >
       <img
         alt="Place image"
         className="place-card__image"
-        height="200"
+        height={200}
         src="img/1.png"
-        width="260"
+        width={260}
       />
     </a>
   </div>
@@ -45,12 +46,13 @@ exports[`PlaceCard correctly renders after relaunch 1`] = `
       </div>
       <button
         className="place-card__bookmark-button button"
+        onClick={[Function]}
         type="button"
       >
         <svg
           className="place-card__bookmark-icon"
-          height="19"
-          width="18"
+          height={19}
+          width={18}
         >
           <use
             xlinkHref="#icon-bookmark"
@@ -72,7 +74,7 @@ exports[`PlaceCard correctly renders after relaunch 1`] = `
         <span
           style={
             Object {
-              "width": "4.8%",
+              "width": "100%",
             }
           }
         />
@@ -83,15 +85,16 @@ exports[`PlaceCard correctly renders after relaunch 1`] = `
         </span>
       </div>
     </div>
-    <h2
-      className="place-card__name"
+    <a
+      href="/offer/1"
+      onClick={[Function]}
     >
-      <a
-        href="#"
+      <h2
+        className="place-card__name"
       >
         Beautiful & luxurious studio at great location
-      </a>
-    </h2>
+      </h2>
+    </a>
     <p
       className="place-card__type"
     >

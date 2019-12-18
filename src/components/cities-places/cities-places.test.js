@@ -1,10 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import CitiesPlaces from './cities-places';
+import {CitiesPlaces} from './cities-places';
 import SortType from './../../consts/sort-type.js';
 import offers from './../../mocks/offers.js';
 
 jest.mock(`./../map/map.jsx`, () => jest.fn().mockReturnValue(null));
+jest.mock(`./../places-list/places-list.jsx`, () => jest.fn().mockReturnValue(null));
 
 it(`CitiesPlaces correctly renders after relaunch`, () => {
   const tree = renderer
